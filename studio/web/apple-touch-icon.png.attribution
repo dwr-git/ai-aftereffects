@@ -4,4 +4,4 @@ author:       Dewiar
 source:       original work made for this project
 license:      MIT OR Apache-2.0
 added:        2026-11-13 by Dewiar
-notes:        Rasterized from the set's motion.svg at 180×180 with headless Chromium (the set's PNG exports were placeholders).
+notes:        Resized from the set's png512/motion.png to 180×180 with ImageMagick.

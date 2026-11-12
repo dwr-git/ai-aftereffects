@@ -37,7 +37,8 @@ pub fn show(app: &mut EffectcraftApp, ui: &mut egui::Ui, rect: Rect) {
     right_side(app, ui, &p, rect, x, cy);
 }
 
-/// The brand mark (About) and the Home button; returns the x after them.
+/// The brand mark (About) and the start-screen button (a grid, so the only house is the one at the
+/// right end that leads back to the site); returns the x after them.
 fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, mut x: f32, cy: f32) -> f32 {
     let t = app.tokens;
     let brand = Rect::from_min_size(pos2(x, cy - 12.0), vec2(24.0, 24.0));
@@ -51,7 +52,7 @@ fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter
     x += 32.0;
 
     let home = Rect::from_min_size(pos2(x, cy - 13.0), vec2(26.0, 26.0));
-    let home_response = widgets::icon_button(ui, home, Icon::Home, app.ui.start_screen, &t, egui::Id::unique("tool-home")).on_hover_text(tr("Home"));
+    let home_response = widgets::icon_button(ui, home, Icon::Grid, app.ui.start_screen, &t, egui::Id::unique("tool-home")).on_hover_text(tr("Home"));
     app.auto.add_response("header.home", &home_response, "Home");
     if home_response.clicked() {
         app.ui.start_screen = !app.ui.start_screen;

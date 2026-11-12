@@ -145,7 +145,7 @@ of modified versions. The Tools bar and the About window draw AI Анимаци�
 | File | Author | Source | Licence |
 |---|---|---|---|
 | `studio/web/favicon.png`, `studio/web/favicon-16.png`, `studio/web/favicon.ico` | Dewiar | Dewiar favicon — owner's own artwork, provided by the project owner for use in these apps (the same browser-tab icon in every AI app) | Owner's own artwork, used with the owner's permission |
-| `studio/web/apple-touch-icon.png` | Dewiar | Original work made for this project (icon `motion` of the AI app icon set), rasterized from its SVG at 180×180 | MIT OR Apache-2.0 |
+| `studio/web/apple-touch-icon.png` | Dewiar | Original work made for this project (icon `motion` of the AI app icon set), resized from png512 to 180×180 with ImageMagick | MIT OR Apache-2.0 |
 | `crates/ui-egui/src/header.rs` (`paint_logo`, `paint_house`) | AI Анимация contributors | Original work, drawn in code: the app mark and the house button | MIT OR Apache-2.0 |
 | `crates/ui-egui/src/theme.rs` (`paint_brand_backdrop`) | AI Анимация contributors | Original work, drawn in code: the Brand theme's backdrop (gradient, glows, grid) | MIT OR Apache-2.0 |
 | `fonts/*.ttf` in the packaged site (not in the repository) | Liberation: Red Hat / Google; Carlito, Caladea: Google (Łukasz Dziedzic, Carolina Giovagnoli, Andrés Torresi) | Ubuntu packages fonts-liberation, fonts-crosextra-carlito, fonts-crosextra-caladea, fetched by CI | OFL-1.1 (licence texts shipped next to them) |
