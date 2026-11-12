@@ -264,7 +264,7 @@ fn transform_row(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter,
         }
     }
     p.text(pos2(r.min.x + 42.0, cy), Align2::LEFT_CENTER, crate::i18n::tr(&pr.name), Tokens::ui(12.0), t.text);
-    let vx = r.min.x + (r.width() * 0.5).max(130.0);
+    let vx = r.min.x + (r.width() * 0.5).max(150.0);
     let label = Rect::from_min_max(pos2(r.min.x + 42.0, r.min.y), pos2(vx - 20.0, r.max.y));
     let resp = ui.interact(label, egui::Id::unique(("props-label", uid)), Sense::click());
     crate::a11y::role_name(&resp, egui::accesskit::Role::Button, &pr.name);

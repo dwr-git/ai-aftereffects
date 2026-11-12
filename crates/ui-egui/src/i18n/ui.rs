@@ -1727,6 +1727,8 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("Stroke", "Обводка"),
     ("Folder", "Папка"),
     ("Image", "Изображение"),
+    ("Image Sequence", "Последовательность изображений"),
+    ("3D Model", "3D-модель"),
 ];
 
 const JAPANESE: &[(&str, &str)] = &[
