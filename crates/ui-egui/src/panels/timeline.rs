@@ -3699,7 +3699,7 @@ fn group_name(app: &mut EffectcraftApp, ui: &mut egui::Ui, g: &mut Rw, rc: &RowC
             ctx.data_mut(|d| d.insert_temp(group_rename_id(), (layer.id.0, *uid, buf)));
         }
     } else {
-        lp.text(pos2(indent + 10.0, cy), Align2::LEFT_CENTER, shown, Tokens::ui(12.0), t.text);
+        lp.text(pos2(indent + 10.0, cy), Align2::LEFT_CENTER, crate::i18n::tr(shown), Tokens::ui(12.0), t.text);
     }
 }
 
@@ -4174,6 +4174,7 @@ fn prop_name(app: &mut EffectcraftApp, ui: &mut egui::Ui, g: &mut Rw, rc: &RowCt
     // 3D layers show Rotation as "Z Rotation" next to X/Y Rotation.
     let is_tr_rot = layer.transform().and_then(|t| t.get("rotation")).is_some_and(|r| r.uid == prop.uid);
     let base = if is_tr_rot && prop.name == "Rotation" && layer.is_3d() { "Z Rotation".to_string() } else { prop.name.clone() };
+    let base = crate::i18n::tr(&base).to_string();
     let pname = if prop.has_expression() { format!("{base}  =") } else { base };
     lp.text(pos2(name_x, cy), Align2::LEFT_CENTER, &pname, Tokens::ui(12.0), if prop.has_expression() { t.expr_text } else { t.text });
     let name_rect = Rect::from_min_max(pos2(name_x, r.min.y), pos2(cw.switches - 2.0, r.max.y));
