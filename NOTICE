@@ -1,13 +1,13 @@
-AI-After Effects
+AI Анимация
 Based on EffectCraft (https://github.com/storytold/effectcraft).
-Copyright (c) 2026 ArtCraft Team and the EffectCraft contributors, and the AI-After Effects
+Copyright (c) 2026 ArtCraft Team and the EffectCraft contributors, and the AI Анимация
 contributors.
 Licensed under the MIT License or the Apache License, Version 2.0, at your option
 (LICENSE-MIT, LICENSE-APACHE).
 
-AI-After Effects carries none of the ArtCraft marks: docs/brand/ was removed, as its licence
-requires of modified versions. "After Effects" names the kind of program only; this product is not
-affiliated with Adobe.
+AI Анимация carries none of the ArtCraft marks: docs/brand/ was removed, as its licence
+requires of modified versions. After Effects is a trademark of Adobe. AI Анимация is not
+affiliated with Adobe; it opens projects in After Effects formats (.aep, .aepx).
 
 The packaged site (not this repository) ships the metric-compatible open fonts Liberation Sans,
 Serif and Mono (SIL Open Font License 1.1), Carlito and Caladea (SIL Open Font License 1.1), with

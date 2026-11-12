@@ -1,0 +1,7 @@
+asset:        apple-touch-icon.png
+title:        AI Анимация home-screen icon (icon `motion` of the AI app icon set)
+author:       Dewiar
+source:       original work made for this project
+license:      MIT OR Apache-2.0
+added:        2026-11-13 by Dewiar
+notes:        Rasterized from the set's motion.svg at 180×180 with headless Chromium (the set's PNG exports were placeholders).

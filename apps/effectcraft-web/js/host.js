@@ -713,7 +713,7 @@ export function showDeviceLost(message, kept) {
   title.textContent = "Связь с видеокартой потеряна";
   const text = document.createElement("p");
   text.textContent =
-    "AI-After Effects больше не может обновлять изображение. Проект всё ещё открыт. " +
+    "AI Анимация больше не может обновлять изображение. Проект всё ещё открыт. " +
     (kept ? "Обновите страницу, чтобы продолжить: проект и несохранённые изменения вернутся." : "Этот сеанс не хранится в браузере: сохраните проект перед обновлением страницы.");
   const detail = document.createElement("small");
   detail.textContent = message;

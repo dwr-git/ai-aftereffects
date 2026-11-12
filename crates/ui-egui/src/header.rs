@@ -1,5 +1,5 @@
 //! The Tools bar: home, the tool slots, tool options, snapping, workspaces and, in the browser,
-//! the house that leads back to the site (AI-After Effects).
+//! the house that leads back to the site (AI Анимация).
 
 use crate::i18n::{tr, tr_args};
 use egui::{Align2, Color32, Rect, Sense, Stroke, StrokeKind, pos2, vec2};
@@ -43,9 +43,9 @@ fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter
     let brand = Rect::from_min_size(pos2(x, cy - 12.0), vec2(24.0, 24.0));
     paint_logo(p, brand);
     let bresp = ui.interact(brand, egui::Id::unique("brand"), Sense::click());
-    app.auto.add_response("header.about", &bresp, "About AI-After Effects");
+    app.auto.add_response("header.about", &bresp, "About AI Анимация");
     widgets::focus_outline(ui, &bresp, &t);
-    if bresp.on_hover_text("О программе AI-After Effects").clicked() {
+    if bresp.on_hover_text("О программе AI Анимация").clicked() {
         app.dialog = Some(Dialog::About);
     }
     x += 32.0;
@@ -298,7 +298,7 @@ fn right_side(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, re
     workspace_tabs(app, ui, p, rx, left, cy);
 }
 
-/// AI-After Effects (web): the house that leads back to the site the editor lives on, at the right
+/// AI Анимация (web): the house that leads back to the site the editor lives on, at the right
 /// end of the bar (`Hooks::go_home`); returns the new `rx`. No community or internet links.
 fn community_buttons(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, rx: f32, cy: f32) -> f32 {
     let t = app.tokens;
@@ -332,7 +332,7 @@ fn text_selected(app: &EffectcraftApp) -> bool {
     app.session.active_comp().and_then(|c| c.layer(*only)).is_some_and(|l| matches!(l.source, LayerSource::Text))
 }
 
-/// AI-After Effects (web): the AI chip, a sparkle and «ИИ» on the accent, while text is edited or a
+/// AI Анимация (web): the AI chip, a sparkle and «ИИ» on the accent, while text is edited or a
 /// text layer is selected; a click asks the page for its AI menu under the chip
 /// (`Hooks::ai_assist`). Returns the x after it.
 fn ai_chip(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, x: f32, cy: f32) -> f32 {
@@ -962,7 +962,7 @@ fn run_workspace_command(app: &mut EffectcraftApp, ui: &egui::Ui, id: &str) {
     }
 }
 
-/// AI-After Effects' mark, drawn in code: a dark rounded tile with a white frame (the frame the
+/// AI Анимация' mark, drawn in code: a dark rounded tile with a white frame (the frame the
 /// AI- apps share), a keyframe diamond and the arc of its motion path.
 pub fn paint_logo(p: &egui::Painter, r: Rect) {
     let s = r.width().min(r.height());

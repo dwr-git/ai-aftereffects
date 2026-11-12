@@ -1,4 +1,4 @@
-//! Fonts the page adds (AI-After Effects: the metric-compatible open fonts shipped in `fonts/`,
+//! Fonts the page adds (AI Анимация: the metric-compatible open fonts shipped in `fonts/`,
 //! and fonts an organisation keeps on its server), for the page's text engine and its workers.
 //!
 //! The page registers each font with the text engine at once. Frame and render workers run their

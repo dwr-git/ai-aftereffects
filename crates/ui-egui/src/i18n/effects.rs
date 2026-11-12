@@ -1524,7 +1524,7 @@ const GEORGIAN_CATEGORIES: &[(&str, &str)] = &[
     ("Utility", "დამხმარე"),
 ];
 
-/// Russian effect names (AI-After Effects).
+/// Russian effect names (AI Анимация).
 const RUSSIAN: &[Row] = &[
     ("ec.3d.channelextract", "3D Channel Extract", "Извлечение 3D-канала"),
     ("ec.3d.cryptomatte", "Cryptomatte", "Cryptomatte"),
@@ -1836,7 +1836,7 @@ const RUSSIAN: &[Row] = &[
     ("ec.3d.instance3d", "3D Layer Instance", "Экземпляр 3D-слоя"),
 ];
 
-/// The category folder names in Russian (AI-After Effects).
+/// The category folder names in Russian (AI Анимация).
 const RUSSIAN_CATEGORIES: &[(&str, &str)] = &[
     ("3D Channel", "3D-канал"),
     ("Audio", "Звук"),

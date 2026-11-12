@@ -6,11 +6,13 @@
   <meta name="color-scheme" content="dark">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="AI-After Effects">
+  <meta name="apple-mobile-web-app-title" content="AI Анимация">
   <meta name="theme-color" content="#0e0f1a">
-  <meta name="description" content="AI-After Effects: моушн-дизайн и композитинг в браузере">
-  <title>AI-After Effects</title>
+  <meta name="description" content="AI Анимация: моушн-дизайн и композитинг в браузере">
+  <title>AI Анимация</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <!-- Shows download progress and, if the start fails, which file and why. Everything loads from this folder only. -->
   <script src="studio/loader.js"></script>
@@ -59,11 +61,11 @@
 <body>
   <canvas id="effectcraft_canvas"></canvas>
   <div id="loading">
-    <p id="status">Загрузка AI-After Effects&hellip;</p>
+    <p id="status">Загрузка AI Анимации&hellip;</p>
     <div id="ap_track"><div id="ap_bar"></div></div>
     <p id="ap_progress"></p>
     <p id="ap_problem" hidden></p>
-    <p id="stalled">Загрузка идёт дольше обычного. Если AI-After Effects не запускается, файлы могли не скачаться
+    <p id="stalled">Загрузка идёт дольше обычного. Если AI Анимация не запускается, файлы могли не скачаться
       или относиться к другой версии страницы. <a href="">Обновите страницу</a>; подробности — в консоли браузера (F12).</p>
   </div>
   <script type="module">
@@ -99,10 +101,10 @@
       workerFrameCheck: (params) => ec.workerFrameCheck(params ?? {}).then(JSON.parse),
     };
     window.effectcraft = api;
-    // AI-After Effects: the bridge the assistant panel (studio/) drives the editor with.
+    // AI Анимация: the bridge the assistant panel (studio/) drives the editor with.
     const bytesOf = (b) => (b instanceof Uint8Array ? b : new Uint8Array(b));
     window.aiaftereffects = {
-      product: "AI-After Effects",
+      product: "AI Анимация",
       takesSaves: false,
       request: api.request,
       execute: api.execute,
@@ -169,14 +171,14 @@
       for (const [i, wait] of [0, 1, 3].entries()) {
         if (wait) {
           const s = document.getElementById("status");
-          if (s) s.textContent = "Загрузка AI-After Effects… (скачать не вышло, пробую ещё раз)";
+          if (s) s.textContent = "Загрузка AI Анимации… (скачать не вышло, пробую ещё раз)";
           await new Promise((r) => setTimeout(r, wait * 1000));
         }
         try {
           return await WebAssembly.compile(await wasmBytes(i > 0));
         } catch (e) {
           last = e;
-          console.error("ai-aftereffects-boot: could not start AI-After Effects:", e);
+          console.error("ai-aftereffects-boot: could not start AI Анимация:", e);
         }
       }
       throw last;
@@ -193,7 +195,7 @@
       window.dispatchEvent(new CustomEvent("aiaftereffects:ready"));
     } catch (e) {
       const s = document.getElementById("status");
-      if (s) { s.className = "err"; s.textContent = "AI-After Effects не запустился:\n" + (e && e.message || e) + "\n\nОбновите страницу. Нужен свежий Chrome, Edge, Firefox или Safari."; }
+      if (s) { s.className = "err"; s.textContent = "AI Анимация не запустилась:\n" + (e && e.message || e) + "\n\nОбновите страницу. Нужен свежий Chrome, Edge, Firefox или Safari."; }
       window.effectcraftLoad.error = String(e);
       throw e;
     }

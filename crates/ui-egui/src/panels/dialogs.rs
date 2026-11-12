@@ -344,7 +344,7 @@ fn about(app: &mut EffectcraftApp, ctx: &egui::Context, t: &Tokens) {
     let mut cmd: Option<&str> = None;
     let tab_id = egui::Id::unique("about_tab");
     // Wide enough for every Contributors column at its natural width (modals shrink to the window).
-    modal(ctx, "About AI-After Effects", vec2(820.0, 520.0), t, |ui| {
+    modal(ctx, "About AI Анимация", vec2(820.0, 520.0), t, |ui| {
         let mut tab = ui.data_mut(|d| d.get_temp::<usize>(tab_id)).unwrap_or(0);
         ui.horizontal(|ui| {
             for (i, (label, id)) in ABOUT_TABS.iter().enumerate() {
@@ -391,14 +391,14 @@ fn about(app: &mut EffectcraftApp, ctx: &egui::Context, t: &Tokens) {
     }
 }
 
-/// The About tab: logo, version and where AI-After Effects comes from (no internet links).
+/// The About tab: logo, version and where AI Анимация comes from (no internet links).
 fn about_main(app: &mut EffectcraftApp, ui: &mut egui::Ui, t: &Tokens, cmd: &mut Option<&'static str>) {
     let _ = (&app, &cmd);
     let (r, _) = ui.allocate_exact_size(vec2(ui.available_width(), 96.0), Sense::hover());
     let p = ui.painter();
     p.rect_filled(r, 10.0, Color32::from_rgb(0x16, 0x18, 0x2a));
     crate::header::paint_logo(p, Rect::from_min_size(r.min + vec2(18.0, 20.0), vec2(56.0, 56.0)));
-    p.text(r.min + vec2(90.0, 34.0), Align2::LEFT_CENTER, "AI-After Effects", Tokens::semibold(24.0), Color32::WHITE);
+    p.text(r.min + vec2(90.0, 34.0), Align2::LEFT_CENTER, "AI Анимация", Tokens::semibold(24.0), Color32::WHITE);
     p.text(
         r.min + vec2(90.0, 62.0),
         Align2::LEFT_CENTER,
@@ -412,6 +412,14 @@ fn about_main(app: &mut EffectcraftApp, ui: &mut egui::Ui, t: &Tokens, cmd: &mut
     ui.label("Основан на EffectCraft от команды ArtCraft (github.com/storytold/effectcraft), MIT OR Apache-2.0.");
     ui.add_space(8.0);
     ui.label(egui::RichText::new("Работает без интернета: всё, что нужно редактору, лежит на вашем сервере.").color(t.text_dim));
+    ui.add_space(8.0);
+    ui.label(
+        egui::RichText::new(
+            "After Effects — товарный знак компании Adobe. AI Анимация не связана с Adobe и открывает проекты в форматах After Effects (.aep, .aepx).",
+        )
+        .small()
+        .color(t.text_faint),
+    );
 }
 
 fn comp_settings(app: &mut EffectcraftApp, ctx: &egui::Context, t: &Tokens, existing: bool) {

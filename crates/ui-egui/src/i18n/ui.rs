@@ -183,7 +183,7 @@ pub(crate) fn tr_args(text: &str, args: &[&dyn Display]) -> String {
 }
 
 /// Japanese: the same rows, in the same order, as the Chinese catalogs below.
-/// Russian (AI-After Effects): the panels, tooltips and dialogs below the menu bar.
+/// Russian (AI Анимация): the panels, tooltips and dialogs below the menu bar.
 const RUSSIAN: &[(&str, &str)] = &[
     ("Appearance Settings…", "Настройки оформления…"),
     ("Add to favorites", "Добавить в избранное"),
@@ -470,7 +470,7 @@ const RUSSIAN: &[(&str, &str)] = &[
         "A clean-room, open-source compositor for motion graphics and visual effects: native on macOS, Windows and Linux, and in the browser. Part of the ArtCraft family of creative apps.",
         "Композитор для моушн-дизайна и визуальных эффектов с открытым кодом, созданный с нуля: работает на macOS, Windows и Linux и в браузере.",
     ),
-    ("About EffectCraft", "О программе AI-After Effects"),
+    ("About EffectCraft", "О программе AI Анимация"),
     ("About...", "О программе..."),
     ("Active Camera", "Активная камера"),
     ("Adapt Feature On Every Frame", "Подстраивать объект на каждом кадре"),
@@ -570,7 +570,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("Duration:", "Длительность:"),
     ("Edit Gradient…", "Изменить градиент…"),
     ("Edit Target: {}", "Цель правки: {}"),
-    ("EffectCraft didn't quit normally last time.", "AI-After Effects в прошлый раз завершился неправильно."),
+    ("EffectCraft didn't quit normally last time.", "AI Анимация в прошлый раз завершилась неправильно."),
     ("Effects & Presets options", "Параметры «Эффекты и шаблоны»"),
     ("Copy Presets Folder Path", "Копировать путь к папке шаблонов"),
     ("Effects: {}", "Эффекты: {}"),
@@ -811,7 +811,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("VR Environments", "VR-окружения"),
     ("Variable Font Axes", "Оси переменного шрифта"),
     ("Video Codec: {}", "Видеокодек: {}"),
-    ("Welcome to EffectCraft", "Добро пожаловать в AI-After Effects"),
+    ("Welcome to EffectCraft", "Добро пожаловать в AI Анимацию"),
     ("You can undo this.", "Это можно отменить."),
     ("You can't undo this.", "Это нельзя отменить."),
     ("built-in", "встроенный"),
@@ -845,7 +845,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("32 bits per channel (float)", "32 бита на канал (float)"),
     ("8 bits per channel", "8 бит на канал"),
     ("Adaptive Resolution", "Адаптивное разрешение"),
-    ("Adobe-style built-in", "Встроенный в стиле Adobe"),
+    ("Adobe-style built-in", "Встроенный (классическая раскладка)"),
     ("Current Settings", "Текущие настройки"),
     ("Disable Per-character 3D", "Выключить 3D для каждого символа"),
     ("Enable Per-character 3D", "Включить 3D для каждого символа"),
@@ -867,8 +867,8 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("Wireframe", "Каркас"),
     ("sRGB IEC61966-2.1 (default)", "sRGB IEC61966-2.1 (по умолчанию)"),
     ("New Project", "Новый проект"),
-    ("EffectCraft home page", "Страница AI-After Effects"),
-    ("EffectCraft on GitHub", "AI-After Effects: исходный код"),
+    ("EffectCraft home page", "Страница AI Анимации"),
+    ("EffectCraft on GitHub", "AI Анимация: исходный код"),
     ("Motion graphics and visual effects · version {}", "Моушн-дизайн и визуальные эффекты · версия {}"),
     ("New Composition", "Новая композиция"),
     ("Open Demo Project", "Открыть демо-проект"),
@@ -890,7 +890,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("{} hours ago", "{} ч назад"),
     ("{} day ago", "{} дн. назад"),
     ("{} days ago", "{} дн. назад"),
-    ("EffectCraft project", "Проект AI-After Effects"),
+    ("EffectCraft project", "Проект AI Анимации"),
     ("After Effects project", "Проект After Effects"),
     ("Lottie animation", "Анимация Lottie"),
     ("Levels of Undo", "Уровни отмены"),
@@ -906,7 +906,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("Use System Color Picker", "Системная палитра цветов"),
     (
         "EffectCraft always uses its own colour picker (the same on every platform and the web).",
-        "AI-After Effects всегда использует свою палитру цветов (одинаковую на всех системах и в браузере).",
+        "AI Анимация всегда использует свою палитру цветов (одинаковую на всех системах и в браузере).",
     ),
     ("Startup & Repair", "Запуск и восстановление"),
     ("Show Home Screen When Launching", "Показывать начальный экран при запуске"),
@@ -1389,7 +1389,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("Layer Transform", "Трансформация слоя"),
     ("Text Animation", "Анимация текста"),
     ("Text Animation Presets", "Шаблоны анимации текста"),
-    ("EffectCraft on getartcraft.com", "AI-After Effects"),
+    ("EffectCraft on getartcraft.com", "AI Анимация"),
     ("Small Screen", "Маленький экран"),
     ("Tool Creates Shape", "Инструмент создаёт фигуру"),
     ("Tool Creates Mask", "Инструмент создаёт маску"),
@@ -1398,7 +1398,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ("Export Scene to Blender...", "Экспорт сцены в Blender..."),
     (
         "Hands-on tutorials that run inside EffectCraft. Do each step yourself, or press Show me.",
-        "Практические уроки прямо в AI-After Effects. Выполняйте шаги сами или нажмите «Показать».",
+        "Практические уроки прямо в AI Анимации. Выполняйте шаги сами или нажмите «Показать».",
     ),
     (
         "JavaScript with the After Effects scripting object model — try app.project.numItems",
@@ -1549,7 +1549,7 @@ const RUSSIAN: &[(&str, &str)] = &[
     ),
     ("Brand", "Фирменная"),
     ("Theme: Brand", "Тема: фирменная"),
-    ("About AI-After Effects", "О программе AI-After Effects"),
+    ("About AI Анимация", "О программе AI Анимация"),
     ("About", "О программе"),
     ("Contributors", "Участники"),
     ("Models", "Модели"),

@@ -1,4 +1,4 @@
-//! AI-After Effects: the engine's toasts and the status line's notices in Russian.
+//! AI Анимация: the engine's toasts and the status line's notices in Russian.
 //!
 //! The engine writes its toasts in English (`Session::toast`); the window shows them through
 //! [`translate`], which knows their wording and keeps the values (names, counts) they carry. A path

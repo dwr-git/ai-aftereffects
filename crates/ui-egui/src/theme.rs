@@ -15,7 +15,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ThemeKind {
-    /// AI-After Effects' Brand theme: navy chrome, the brand's blue-violet accent, solid black
+    /// AI Анимация' Brand theme: navy chrome, the brand's blue-violet accent, solid black
     /// menus and windows with a strong shadow, and the brand backdrop round the composition.
     #[default]
     Brand,
@@ -203,7 +203,7 @@ impl Tokens {
             gradients: true,
         };
         match kind {
-            // AI-After Effects' Dark: the NeuDark palette (chrome #262D3A, cards #282F3D, canvas
+            // AI Анимация' Dark: the NeuDark palette (chrome #262D3A, cards #282F3D, canvas
             // #1B202A, fields #202632, text #E4EBF6 / #C4CFE0 / #A0ADC2, accent #5CA8FF).
             ThemeKind::Dark => Tokens {
                 app_bg: Color32::from_rgb(0x1c, 0x22, 0x2c),
@@ -307,7 +307,7 @@ impl Tokens {
                 pasteboard: Color32::from_rgb(0x11, 0x11, 0x11),
                 ..dark
             },
-            // AI-After Effects' Light: the NeuLight palette (chrome #E4ECF6, cards #E6EEF8, canvas
+            // AI Анимация' Light: the NeuLight palette (chrome #E4ECF6, cards #E6EEF8, canvas
             // #D6E0ED, fields #DCE6F3, text #1E2C42 / #34445E / #4E5E78, accent #3480E2, accent
             // text #1652A8).
             ThemeKind::Light => Tokens {

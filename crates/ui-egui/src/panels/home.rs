@@ -283,7 +283,7 @@ fn rail_ui(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, rail:
         }
         y += 38.0;
     }
-    // AI-After Effects: no community or internet links (the editor works without the internet).
+    // AI Анимация: no community or internet links (the editor works without the internet).
     let _ = (x0, w, y);
 }
 
@@ -299,7 +299,7 @@ fn home_page(
     let t = app.tokens;
     let (x0, w) = (area.min.x, area.width());
     let mut y = area.min.y;
-    p.text(pos2(x0, y + 14.0), Align2::LEFT_CENTER, "Добро пожаловать в AI-After Effects", Tokens::semibold(26.0), t.tab_text_active);
+    p.text(pos2(x0, y + 14.0), Align2::LEFT_CENTER, "Добро пожаловать в AI Анимацию", Tokens::semibold(26.0), t.tab_text_active);
     y += 40.0;
     p.text(
         pos2(x0, y + 8.0),

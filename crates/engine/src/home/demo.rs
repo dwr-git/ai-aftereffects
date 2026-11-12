@@ -116,8 +116,8 @@ fn lower_third(p: &mut Project) -> Comp {
     let mut title = text_layer(
         p,
         &c,
-        "Сделано в AI-After Effects",
-        TextDoc { text: "Сделано в AI-After Effects".into(), size: 40.0, style: "SemiBold".into(), justify: Justify::Center, ..Default::default() },
+        "Сделано в AI Анимации",
+        TextDoc { text: "Сделано в AI Анимации".into(), size: 40.0, style: "SemiBold".into(), justify: Justify::Center, ..Default::default() },
         [440.0, 914.0],
     );
     anim(&mut title, "transform/opacity", keys(&[(0.4, Value::Scalar(0.0)), (0.9, Value::Scalar(100.0))]));

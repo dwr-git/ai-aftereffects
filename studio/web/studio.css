@@ -1,4 +1,4 @@
-/* AI-After Effects — панель помощника.
+/* AI Анимация — панель помощника.
    Неоморфизм: одна поверхность, всё «выдавлено» из неё мягкими парными тенями
    (светлая — сверху слева, тёмная — снизу справа) или «вдавлено» в неё.
    Цвета повторяют темы NeuLight / NeuDark редактора (crates/ui-egui/src/theme.rs). */
@@ -576,7 +576,7 @@ body.studio-open .st-bar { left: calc((100% - var(--st-w)) / 2); width: min(640p
 .st-agent-wrap .st-agent-menu { top: auto; bottom: calc(100% + 8px); right: -40px; }
 .st-foot .st-agent-menu { font-size: 13px; color: var(--st-text); } .st-foot .st-agent-menu button { text-decoration: none; padding: 8px 10px 8px 28px; }
 
-/* AI-After Effects: «Мои проекты» — проекты и файлы для них отдельными группами; варианты заголовка. */
+/* AI Анимация: «Мои проекты» — проекты и файлы для них отдельными группами; варианты заголовка. */
 .st-files-group { padding: 10px 12px 4px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--st-text); opacity: .6; }
 .st-file.st-media .st-file-icon { opacity: .7; }
 .st-ai-variants { display: flex; flex-direction: column; gap: 4px; margin: 6px 0 10px; }

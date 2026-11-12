@@ -134,7 +134,7 @@ impl Services for WebServices {
         if quiet || crate::is_worker() {
             return Ok(());
         }
-        // AI-After Effects: a saved project goes to the page, which keeps it in the user's
+        // AI Анимация: a saved project goes to the page, which keeps it in the user's
         // projects on the server; everything else (exports, a refused hand-over) downloads.
         if is_project(path) {
             match crate::api::save_to_page(path, data) {

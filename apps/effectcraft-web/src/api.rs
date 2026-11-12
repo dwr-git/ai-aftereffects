@@ -2,7 +2,7 @@
 //! for agents and browser tests. `web/index.html` wraps the exported [`request`] as
 //! `effectcraft.request(method, params)`, `effectcraft.execute(command, params)` and friends.
 //!
-//! AI-After Effects: the same exports also make `window.aiaftereffects` (`web/index.html`), the
+//! AI Анимация: the same exports also make `window.aiaftereffects` (`web/index.html`), the
 //! bridge the assistant panel (`studio/`) drives the editor with:
 //!
 //! ```js

@@ -7,7 +7,7 @@ use crate::EffectcraftApp;
 
 /// Effect names, keyed by effect id (#821).
 pub(crate) mod effects;
-/// AI-After Effects: the engine's toasts and status notices in Russian.
+/// AI Анимация: the engine's toasts and status notices in Russian.
 pub(crate) mod toasts;
 /// Translations for the panels, tooltips and dialogs below the menu bar (see the module docs).
 pub(crate) mod ui;
@@ -4958,8 +4958,8 @@ const RUSSIAN: &[(&str, &str, &str)] = &[
     ("", "Side", "Боковая грань"),
     ("", "Back", "Задняя грань"),
     ("layer.addTextAnimator", "Color", "Цвет"),
-    ("", "EffectCraft", "AI-After Effects"),
-    ("app.about", "About EffectCraft...", "О программе AI-After Effects..."),
+    ("", "EffectCraft", "AI Анимация"),
+    ("app.about", "About EffectCraft...", "О программе AI Анимация..."),
     ("", "Settings...", "Настройки..."),
     ("app.settings", "General...", "Общие..."),
     ("app.settings", "Startup & Repair...", "Запуск и восстановление..."),
@@ -4978,10 +4978,10 @@ const RUSSIAN: &[(&str, &str, &str)] = &[
     ("app.settings", "Video...", "Видео..."),
     ("app.settings", "3D...", "3D..."),
     ("app.settings", "Scripting & Expressions...", "Скрипты и выражения..."),
-    ("app.hide", "Hide EffectCraft", "Скрыть AI-After Effects"),
+    ("app.hide", "Hide EffectCraft", "Скрыть AI Анимацию"),
     ("app.hideOthers", "Hide Others", "Скрыть остальные"),
     ("app.showAll", "Show All", "Показать все"),
-    ("app.quit", "Quit EffectCraft", "Выйти из AI-After Effects"),
+    ("app.quit", "Quit EffectCraft", "Выйти из AI Анимации"),
     ("", "File", "Файл"),
     ("", "New", "Создать"),
     ("file.newProject", "New Project", "Новый проект"),
@@ -5006,7 +5006,7 @@ const RUSSIAN: &[(&str, &str, &str)] = &[
     ("file.importTimeline", "Adobe Premiere Pro Project...", "Проект Adobe Premiere Pro..."),
     ("file.importAep", "Adobe After Effects Project...", "Проект Adobe After Effects..."),
     ("file.exportAep", "Adobe After Effects Project...", "Проект Adobe After Effects..."),
-    ("file.importProject", "EffectCraft Project...", "Проект AI-After Effects..."),
+    ("file.importProject", "EffectCraft Project...", "Проект AI Анимации..."),
     ("file.importPlaceholder", "Placeholder...", "Заполнитель..."),
     ("file.importSolid", "Solid...", "Сплошной цвет..."),
     ("file.importLottie", "Lottie...", "Lottie..."),
@@ -5571,7 +5571,7 @@ const RUSSIAN: &[(&str, &str, &str)] = &[
     ("window.panel", "Create Nulls From Paths", "Создание нулевых объектов из контуров"),
     ("window.panel", "VR Comp Editor", "Редактор VR-композиций"),
     ("", "Help", "Справка"),
-    ("help.docs", "EffectCraft Help...", "Справка AI-After Effects..."),
+    ("help.docs", "EffectCraft Help...", "Справка AI Анимации..."),
     ("help.docs", "Scripting Help...", "Справка по скриптам..."),
     ("help.docs", "Expression Reference...", "Справочник по выражениям..."),
     ("help.docs", "Effect Reference...", "Справочник по эффектам..."),

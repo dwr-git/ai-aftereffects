@@ -32,10 +32,10 @@ pub type DialogDone = Box<dyn FnOnce(Vec<String>) + Send>;
 /// Host hooks provided by the native app (file pickers etc.).
 #[derive(Default)]
 pub struct Hooks {
-    /// Web (AI-After Effects): leave the editor for the site it lives on
+    /// Web (AI Анимация): leave the editor for the site it lives on
     /// (`STUDIO_CONFIG.homeUrl`). The Tools bar shows a house at its right end when set.
     pub go_home: Option<Box<dyn Fn()>>,
-    /// Web (AI-After Effects): open the page's AI menu for the text being edited or the selected
+    /// Web (AI Анимация): open the page's AI menu for the text being edited or the selected
     /// text layer, at this point of the window (egui points).
     pub ai_assist: Option<Box<dyn Fn(f32, f32)>>,
     /// The system appearance for Settings ▸ Appearance ▸ Sync with System (the desktop app reads

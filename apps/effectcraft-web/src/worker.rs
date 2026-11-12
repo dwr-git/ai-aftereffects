@@ -185,7 +185,7 @@ pub fn pool() -> Arc<effectcraft_media::MediaPool> {
 /// A footage file for the jobs that follow.
 #[wasm_bindgen(js_name = workerFile)]
 pub fn worker_file(path: String, bytes: js_sys::Uint8Array) {
-    // AI-After Effects: a font the page added (crate::fonts), for this worker's text engine.
+    // AI Анимация: a font the page added (crate::fonts), for this worker's text engine.
     if crate::fonts::is_font_path(&path) {
         if bytes.length() <= 64 * 1024 * 1024 {
             let _ = effectcraft_engine::text::fonts::add_font_data(bytes.to_vec());

@@ -1,4 +1,4 @@
-/* AI-After Effects — помощник и файлы на сервере внутри программы моушн-дизайна.
+/* AI Анимация — помощник и файлы на сервере внутри программы моушн-дизайна.
  *
  * Панель в браузере разговаривает с моделью через api/assistant.php, а действия
  * выполняет в самом редакторе через window.aiaftereffects (apps/effectcraft-web/web/index.html
@@ -612,7 +612,7 @@
   function showEmpty() {
     log.innerHTML = `<div class="st-empty">
       <h3>Чем помочь?</h3>
-      <p>Спросите, где найти функцию в AI-After Effects, или попросите сделать титр, анимацию или проверку проекта за вас.</p>
+      <p>Спросите, где найти функцию в AI Анимации, или попросите сделать титр, анимацию или проверку проекта за вас.</p>
       <button class="st-mini primary st-start-tpl">Быстрые задачи</button>
       <div class="st-chips">
         <button class="st-chip" data-act="1">Сделай титр: название и подзаголовок с плавным появлением. Название: </button>
@@ -865,7 +865,7 @@
     try {
       r = await post(payload);
     } catch (e) {
-      console.warn('AI-After Effects: запрос к помощнику оборвался', e);
+      console.warn('AI Анимация: запрос к помощнику оборвался', e);
       if (!hasImages(payload)) throw new Error(await explainNoAnswer(took()));
       try { r = await post(withoutImages(payload)); } catch { throw new Error(await explainNoAnswer(took())); }
       tellImagesBlocked();
@@ -1261,7 +1261,7 @@
       for (const name of names) {
         if (have.has(name) || !onServer.has(name)) continue;
         toast(`Загружаю «${name}»…`);
-        try { VC().putFile(name, await fetchFile(name)); n++; } catch (e) { console.warn('AI-After Effects: файл проекта ' + name, e); }
+        try { VC().putFile(name, await fetchFile(name)); n++; } catch (e) { console.warn('AI Анимация: файл проекта ' + name, e); }
       }
       return n;
     }
@@ -1320,7 +1320,7 @@
           if (!quiet) toast(`Кладу на сервер «${name}» (${fmtSize(data.length)})…`);
           await upload(name, data, true);
           n++;
-        } catch (e) { console.warn('AI-After Effects: не удалось сохранить на сервер ' + name, e); if (!quiet) toast(`«${name}» не сохранён на сервере: ${e.message}`, true); }
+        } catch (e) { console.warn('AI Анимация: не удалось сохранить на сервер ' + name, e); if (!quiet) toast(`«${name}» не сохранён на сервере: ${e.message}`, true); }
       }
       return n;
     }
@@ -1472,13 +1472,13 @@
       try {
         const j = await (await fetch(CFG.files + '?action=fonts', { credentials: 'same-origin', cache: 'no-store' })).json();
         for (const f of (j && j.ok && j.fonts) || []) {
-          await add(f.name, CFG.files + '?action=font&name=' + encodeURIComponent(f.name)).catch((e) => console.warn('AI-After Effects: шрифт ' + f.name, e));
+          await add(f.name, CFG.files + '?action=font&name=' + encodeURIComponent(f.name)).catch((e) => console.warn('AI Анимация: шрифт ' + f.name, e));
         }
       } catch { /* нет входа или сервера — только двойники */ }
       try {
         const m = await (await fetch(CFG.fonts, { cache: 'no-cache' })).json();
         for (const f of (m && m.fonts) || []) {
-          await add(f.file, 'fonts/' + encodeURIComponent(f.file)).catch((e) => console.warn('AI-After Effects: шрифт ' + f.file, e));
+          await add(f.file, 'fonts/' + encodeURIComponent(f.file)).catch((e) => console.warn('AI Анимация: шрифт ' + f.file, e));
         }
       } catch { /* сборка без шрифтов */ }
       return loaded;
@@ -2062,7 +2062,7 @@
     commands().catch(() => {});
     watchTheme();
     Gallery.start();
-    fonts.then((n) => { if (n) console.info('AI-After Effects: шрифтов загружено', n); });
+    fonts.then((n) => { if (n) console.info('AI Анимация: шрифтов загружено', n); });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

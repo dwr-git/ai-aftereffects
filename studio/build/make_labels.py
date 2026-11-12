@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Russian names for the assistant's command search.
 
-Reads the Russian catalogs AI-After Effects is built with and writes studio/ru-labels.json:
+Reads the Russian catalogs AI Анимация is built with and writes studio/ru-labels.json:
 
     {"text": {"Import...": "Импорт...", ...}, "id": {"layer.newText": "Текст", ...}}
 

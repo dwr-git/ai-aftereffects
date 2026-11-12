@@ -1,6 +1,6 @@
 [package]
 name = "effectcraft-web"
-description = "AI-After Effects: EffectCraft in the browser (wasm32): eframe web runner, persistent browser storage (OPFS / IndexedDB), Web Audio, Web Worker renders, window.aiaftereffects bridge"
+description = "AI Анимация: EffectCraft in the browser (wasm32): eframe web runner, persistent browser storage (OPFS / IndexedDB), Web Audio, Web Worker renders, window.aiaftereffects bridge"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

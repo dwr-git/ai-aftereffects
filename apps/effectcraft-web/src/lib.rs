@@ -17,7 +17,7 @@
 //! | Render Queue / analysis threads | Web Workers running their own engine instance (`worker`) |
 //! | cpal audio output | Web Audio: an AudioWorklet fed from the preview mixdown (`audio`) |
 //! | TCP control channel / MCP | `window.effectcraft` and `window.aiaftereffects` JavaScript API (`api`) |
-//! | written project files (Save) | AI-After Effects: handed to the page (`aiaftereffects:save`), which keeps them on the server |
+//! | written project files (Save) | AI Анимация: handed to the page (`aiaftereffects:save`), which keeps them on the server |
 //!
 //! [`store`] and [`startup`] are portable (unit-tested natively); everything else is `wasm32`-only.
 

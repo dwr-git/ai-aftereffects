@@ -37,7 +37,7 @@ pub(crate) fn set_worker() {
 /// `rel` resolved against the page's URL (`worker.js`, `audio-worklet.js`); `""` = the page's
 /// folder.
 pub fn page_url(rel: &str) -> String {
-    // The document's base URL: AI-After Effects serves each build's page from `index.php` with a
+    // The document's base URL: AI Анимация serves each build's page from `index.php` with a
     // `<base href="b/<N>/">`, and the workers and the worklet sit next to that build's page.
     let doc_base = web_sys::window().and_then(|w| w.document()).and_then(|d| d.base_uri().ok().flatten());
     let href = doc_base.or_else(|| web_sys::window().and_then(|w| w.location().href().ok())).unwrap_or_default();
@@ -150,7 +150,7 @@ impl eframe::App for WebApp {
             f(&mut self.app);
         }
         self.app.tick(ctx, frame);
-        // AI-After Effects: the page shows whether the project has unsaved changes.
+        // AI Анимация: the page shows whether the project has unsaved changes.
         api::dirty(self.app.session.is_dirty());
         TEXT_FOCUS.with(|f| f.set(ctx.text_edit_focused()));
         // eframe on the web ignores `ViewportCommand::Title`: the tab title follows the open document here.
@@ -264,7 +264,7 @@ fn install_hooks(app: &mut EffectcraftApp) {
         Some(path)
     }));
     app.hooks.audio_device = Some(Box::new(audio::open));
-    // AI-After Effects: the house at the right of the Tools bar goes back to the site; the AI
+    // AI Анимация: the house at the right of the Tools bar goes back to the site; the AI
     // chip by text asks the page for its AI menu.
     app.hooks.go_home = Some(Box::new(go_home));
     app.hooks.ai_assist = Some(Box::new(api::ai_menu));
@@ -279,7 +279,7 @@ pub async fn start(canvas_id: String) -> Result<(), JsValue> {
     // chosen in Settings still wins.
     let navigator = web_sys::window().map(|w| w.navigator());
     let browser = navigator.iter().flat_map(|n| n.languages().iter().filter_map(|v| v.as_string()).collect::<Vec<_>>());
-    // AI-After Effects: Russian unless the address asks for another language (`?lang=`).
+    // AI Анимация: Russian unless the address asks for another language (`?lang=`).
     effectcraft_ui_egui::i18n::set_system_locales(Some(query_value("lang").unwrap_or_else(|| "ru".into())), browser.collect());
     let doc = web_sys::window().and_then(|w| w.document()).ok_or("no document")?;
     let canvas: web_sys::HtmlCanvasElement = doc.get_element_by_id(&canvas_id).ok_or("no canvas")?.dyn_into()?;
@@ -303,7 +303,7 @@ pub async fn start(canvas_id: String) -> Result<(), JsValue> {
     // `./effectcraft-config.json`: what to open on load.
     // `?empty` and `?demo` decide by themselves, so they skip the request.
     let startup = if empty || query_flag("demo") { Startup::default() } else { config_file::startup().await };
-    // AI-After Effects: a first visit starts on a blank project, not the demo (Help ▸ Open Demo
+    // AI Анимация: a first visit starts on a blank project, not the demo (Help ▸ Open Demo
     // Project and `?demo` still open it); a later visit comes back to the last project.
     let startup = if startup == Startup::Last { Startup::Empty } else { startup };
     // An explicit `"demo"` start leaves the saved session alone until the user opens or edits something.

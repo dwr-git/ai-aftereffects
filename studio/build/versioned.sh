@@ -31,7 +31,7 @@ mkdir -p "$APP/b/$N" "$APP/studio"
 for doc in README.ru.md CHANGES.ru.md nginx.conf.example; do
   [ -f "$FLAT/$doc" ] && mv "$FLAT/$doc" "$APP/$doc"
 done
-for icon in favicon.png apple-touch-icon.png; do
+for icon in favicon.png favicon-16.png favicon.ico apple-touch-icon.png; do
   [ -f "$FLAT/$icon" ] && cp "$FLAT/$icon" "$APP/$icon"
 done
 [ -f "$FLAT/.htaccess" ] && cp "$FLAT/.htaccess" "$APP/.htaccess"

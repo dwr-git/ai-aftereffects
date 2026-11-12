@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds AI-After Effects: the browser app plus the assistant panel and its PHP, as one folder ready for
+# Builds AI Анимация: the browser app plus the assistant panel and its PHP, as one folder ready for
 # the server, zipped:  $DIST/ai-aftereffects-build-<N>-<date>.zip  →  ai-aftereffects/
 # The folder works under any name: every path in it is relative.
 #
@@ -34,8 +34,10 @@ rm -f "$APP/HOSTING.md"
 mkdir -p "$APP/studio"
 cp "$ROOT/studio/web/studio.js" "$ROOT/studio/web/studio.css" "$ROOT/studio/web/config.js" "$ROOT/studio/web/loader.js" "$APP/studio/"
 cp "$ROOT/studio/web/.htaccess" "$APP/studio/"
-# AI-After Effects' own icon: a keyframe diamond and its motion path, in the frame the other AI- apps share.
-cp "$ROOT/studio/web/favicon.png" "$ROOT/studio/web/apple-touch-icon.png" "$APP/"
+# Browser-tab icon: the shared Dewiar favicon (the owner's own artwork, the same in every AI app).
+# Home-screen icon: AI Анимация's own icon (`motion` from the AI app icon set, original work by Dewiar).
+cp "$ROOT/studio/web/favicon.png" "$ROOT/studio/web/favicon-16.png" "$ROOT/studio/web/favicon.ico" \
+  "$ROOT/studio/web/apple-touch-icon.png" "$APP/"
 python3 "$ROOT/studio/build/make_labels.py" "$APP/studio/ru-labels.json"
 
 # Metric-compatible open fonts (Liberation for Times New Roman, Arial and Courier New, Carlito for
@@ -99,7 +101,7 @@ sed -i.bak "s#<html lang=\"ru\"#<html lang=\"ru\" data-build=\"$BUILD\"#" "$APP/
 grep -q "data-build=\"$BUILD\"" "$APP/index.html" || { echo "error: the page has no build number" >&2; exit 1; }
 # Каждая сборка — в своей папке b/<номер>/, index.php выбирает самую новую (studio/build/versioned.sh):
 # обновление любой программой заливки не может смешать файлы разных сборок.
-"$ROOT/studio/build/versioned.sh" "$APP" "$BUILD" "AI-After Effects"
+"$ROOT/studio/build/versioned.sh" "$APP" "$BUILD" "AI Анимация"
 # Каждый текстовый файл с постоянным именем (страница, index.php, скрипты и стили панели, PHP
 # помощника, файл запуска с постоянным именем) получает в конце строку с номером сборки и набивкой
 # той же разной длины: иначе программа заливки, которая пропускает файлы того же размера, оставит

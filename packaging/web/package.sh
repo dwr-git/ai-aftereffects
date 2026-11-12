@@ -7,7 +7,7 @@
 # `cargo xtask web` builds it (wasm-opt from binaryen is used when installed). The zip holds a
 # self-contained static site in ai-aftereffects-web-<version>/ that works from any URL path.
 #
-# AI-After Effects: the app's WebAssembly is shipped gzipped and cut into parts (app/), listed in
+# AI Анимация: the app's WebAssembly is shipped gzipped and cut into parts (app/), listed in
 # app/parts.txt; the page (apps/effectcraft-web/web/index.html) downloads and inflates them, shows
 # the progress (studio/loader.js reads data-app-bytes) and hands the compiled module to the app and
 # its render workers. No file is larger than one part. The service worker of the upstream build is

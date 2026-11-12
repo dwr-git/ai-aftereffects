@@ -100,7 +100,7 @@ fn apply_settings(c: &mut Comp, p: &Value) {
 fn new_comp(s: &mut Session, p: &Value) -> Result<Value> {
     check_rate(p, "comp.new")?;
     let name = str_p(p, "name").unwrap_or("Comp 1").to_string();
-    // AI-After Effects: 25 fps, the European and Russian broadcast standard.
+    // AI Анимация: 25 fps, the European and Russian broadcast standard.
     let rate = rate_p(p).unwrap_or(FrameRate::FPS_25);
     let mut c = Comp::new(1920, 1080, rate, rate.snap_nearest(Tick::from_seconds_f64(10.0)));
     // Settings ▸ 3D ▸ Default 3D Renderer.

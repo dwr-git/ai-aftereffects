@@ -116,7 +116,7 @@ impl WebFrames {
             let Some(k) = s.workers.iter().position(|w| w.alive && w.busy.is_none()) else { return Err((done, "no idle frame worker".to_string())) };
             // Footage the worker hasn't got yet.
             let w = &mut s.workers[k];
-            // AI-After Effects: the fonts the page added, once per worker.
+            // AI Анимация: the fonts the page added, once per worker.
             for (p, d) in crate::fonts::all() {
                 if w.files.contains_key(&p) {
                     continue;
