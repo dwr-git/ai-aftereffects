@@ -198,7 +198,13 @@ fn prop_row(
     };
     let name_clip = Rect::from_min_max(pos2(swr.max.x + 6.0, r.min.y), pos2(vx - 6.0, r.max.y));
     app.auto.add(&format!("effectControls.prop.{uid}.name"), name_clip, &prop.name);
-    p.with_clip_rect(name_clip.intersect(p.clip_rect())).text(pos2(swr.max.x + 6.0, cy), Align2::LEFT_CENTER, &prop.name, Tokens::ui(12.0), t.text);
+    p.with_clip_rect(name_clip.intersect(p.clip_rect())).text(
+        pos2(swr.max.x + 6.0, cy),
+        Align2::LEFT_CENTER,
+        crate::i18n::tr(&prop.name),
+        Tokens::ui(12.0),
+        t.text,
+    );
     let name_response = ui.interact(name_clip, egui::Id::unique(("ec-prop-name", uid)), Sense::click());
     if name_response.double_clicked() {
         app.ui.timeline.search.clear();
@@ -386,7 +392,7 @@ fn value_toggle(app: &mut EffectcraftApp, ui: &mut egui::Ui, cx: &PropCx, value:
     if widgets::checkbox(ui, cr, *b, &t, egui::Id::unique(("ec-b", uid))).changed() {
         cx.set_step(actions, json!(!b));
     }
-    p.text(pos2(cr.max.x + 6.0, cy), Align2::LEFT_CENTER, &prop.name, Tokens::ui(12.0), t.text_dim);
+    p.text(pos2(cr.max.x + 6.0, cy), Align2::LEFT_CENTER, crate::i18n::tr(&prop.name), Tokens::ui(12.0), t.text_dim);
     app.auto.add(&format!("effectControls.prop.{uid}.value"), cr, &prop.name);
 }
 
@@ -769,7 +775,7 @@ pub(super) fn group_rows(
                     if widgets::twirl(ui, tw, open, egui::Id::unique(("ec-g", sg.uid)), &t).clicked() {
                         toggle_closed(app, sg, open, ui.input(|i| i.modifiers.alt || i.modifiers.command));
                     }
-                    let name = p.text(pos2(tw.max.x + 6.0, r.center().y), Align2::LEFT_CENTER, &sg.name, Tokens::ui(12.0), t.text);
+                    let name = p.text(pos2(tw.max.x + 6.0, r.center().y), Align2::LEFT_CENTER, crate::i18n::tr(&sg.name), Tokens::ui(12.0), t.text);
                     app.auto.add(&format!("effectControls.group.{}.name", sg.uid), name, &sg.name);
                 }
                 if open {

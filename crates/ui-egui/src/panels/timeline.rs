@@ -5345,7 +5345,7 @@ fn shape_add_popup(
     if resp.clicked() {
         widgets::open_popup(ui, pop);
     }
-    let opts: Vec<String> = SHAPE_ADD_ITEMS.iter().map(|(k, l)| if *k == "-" { "-".to_string() } else { l.to_string() }).collect();
+    let opts: Vec<String> = SHAPE_ADD_ITEMS.iter().map(|(k, l)| if *k == "-" { "-".to_string() } else { crate::i18n::tr(l).to_string() }).collect();
     if let Some(i) = widgets::popup_menu(ui, pop, br.left_bottom(), &opts, None)
         && let Some((kind, _)) = SHAPE_ADD_ITEMS.get(i).filter(|(k, _)| *k != "-")
     {

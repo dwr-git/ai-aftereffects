@@ -1500,11 +1500,30 @@
     return ids;
   }
   const newComp = (name, width, height, duration) => PC.exec('comp.new', { name, width, height, frameRate: 25, duration: duration || 10 });
+  // Рендер одной активной композиции: остальные элементы очереди на время рендера выключаются
+  // (флажок «Рендер»), а потом включаются снова — движок рендерит всё, что отмечено в очереди.
   async function render(format, label) {
     const c = await activeComp();
-    await PC.exec('renderQueue.add', { comp: c.id, format });
-    toast(`Рендер «${c.name}» в ${label}… Файл скачается сам, когда будет готов.`);
-    await PC.exec('renderQueue.render', { wait: false });
+    const list = await PC.exec('renderQueue.list').catch(() => ({ items: [] }));
+    if (list && list.rendering) throw new Error('Рендер уже идёт — дождитесь его конца.');
+    const others = ((list && list.items) || []).filter((i) => i && i.render && i.id != null).map((i) => i.id);
+    for (const id of others) await PC.exec('renderQueue.setRender', { item: id, render: false }).catch(() => {});
+    const restore = async () => { for (const id of others) await PC.exec('renderQueue.setRender', { item: id, render: true }).catch(() => {}); };
+    try {
+      await PC.exec('renderQueue.add', { comp: c.id, format });
+      toast(`Рендер «${c.name}» в ${label}… Файл скачается сам, когда будет готов.`);
+      await PC.exec('renderQueue.render', { wait: false });
+    } catch (e) { await restore(); throw e; }
+    if (!others.length) return;
+    // Флажки остальных — обратно, когда рендер закончится.
+    (async () => {
+      for (let i = 0; i < 21600; i++) {
+        await sleep(2000);
+        const now = await PC.exec('renderQueue.list').catch(() => null);
+        if (now && !now.rendering) break;
+      }
+      await restore();
+    })();
   }
   // Быстрые задачи: те, что делаются командами, — сразу; остальные — через помощника (! — сделать, ? — объяснить).
   const TASKS = [
