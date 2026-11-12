@@ -64,6 +64,10 @@ impl Offload for WorkerOffload {
                 files.push(&js_sys::Array::of3(&JsValue::from_str(p), &js_sys::Uint8Array::from(&d[..]), &JsValue::from_f64(version as f64)));
             }
         }
+        // The fonts the page added, so text renders in the worker as on the page.
+        for (p, d) in crate::fonts::all() {
+            files.push(&js_sys::Array::of3(&JsValue::from_str(&p), &js_sys::Uint8Array::from(&d[..]), &JsValue::from_f64(0.0)));
+        }
         let json = serde_json::to_string(&req).map_err(|e| e.to_string())?;
         let on: OnMessage = Closure::new(move |kind: String, json: JsValue, path: JsValue, bytes: JsValue| {
             match kind.as_str() {
@@ -181,6 +185,13 @@ pub fn pool() -> Arc<effectcraft_media::MediaPool> {
 /// A footage file for the jobs that follow.
 #[wasm_bindgen(js_name = workerFile)]
 pub fn worker_file(path: String, bytes: js_sys::Uint8Array) {
+    // AI-After Effects: a font the page added (crate::fonts), for this worker's text engine.
+    if crate::fonts::is_font_path(&path) {
+        if bytes.length() <= 64 * 1024 * 1024 {
+            let _ = effectcraft_engine::text::fonts::add_font_data(bytes.to_vec());
+        }
+        return;
+    }
     let data: Arc<[u8]> = bytes.to_vec().into();
     crate::files::STORE.put_file(&path, data.clone(), false);
     POOL.with(|p| {

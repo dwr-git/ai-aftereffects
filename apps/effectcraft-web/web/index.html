@@ -1,53 +1,77 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru" data-app-bytes="0">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#1b1c1f">
-  <meta name="description" content="EffectCraft: motion graphics and visual effects in the browser">
-  <title>EffectCraft</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icon-256.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="AI-After Effects">
+  <meta name="theme-color" content="#0e0f1a">
+  <meta name="description" content="AI-After Effects: моушн-дизайн и композитинг в браузере">
+  <title>AI-After Effects</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Shows download progress and, if the start fails, which file and why. Everything loads from this folder only. -->
+  <script src="studio/loader.js"></script>
   <style>
-    html, body { margin: 0; height: 100%; overflow: hidden; background: #1b1c1f; }
-    canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; outline: none; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0e0f1a;
+      overscroll-behavior: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+    canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; outline: none; touch-action: none; }
     #loading {
-      position: absolute; inset: 0; display: flex; flex-direction: column; gap: 14px;
-      align-items: center; justify-content: center; color: #c9c9cc;
-      font: 14px/1.4 system-ui, sans-serif; pointer-events: none;
+      position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0 16px; text-align: center; color: #c4cbe6; font: 14px/1.5 system-ui, sans-serif; pointer-events: none;
     }
-    #loading img { width: 56px; height: 56px; }
-    #loading .err { color: #ff8a7a; white-space: pre-wrap; max-width: 70ch; pointer-events: auto; }
+    #loading p { margin: 0 0 8px; max-width: 460px; }
+    #loading a { color: #a9b4ff; pointer-events: auto; }
+    #loading .err { color: #ff9b8f; white-space: pre-wrap; max-width: 70ch; pointer-events: auto; user-select: text; -webkit-user-select: text; }
+    #ap_track { width: min(320px, 80vw); height: 6px; margin: 4px 0 10px; border-radius: 3px; background: rgba(196, 203, 230, .15); overflow: hidden; }
+    #ap_bar { width: 0; height: 100%; border-radius: 3px; background: linear-gradient(90deg, #667eea, #764ba2); transition: width .2s; }
+    #ap_progress { font-variant-numeric: tabular-nums; min-height: 1.5em; }
+    #ap_problem { color: #ff9b8f; text-align: left; pointer-events: auto; user-select: text; -webkit-user-select: text; }
+    #ap_problem[hidden] { display: none; }
+    /* The app removes #loading once it runs. If the WebAssembly never downloads or doesn't match
+       this page, no Rust runs to say so, so the page itself shows what to do after a while. */
+    #stalled { color: #9aa0bf; visibility: hidden; animation: aiae-stalled 0s 40s forwards; }
+    @keyframes aiae-stalled { to { visibility: visible; } }
     #device-lost {
       position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px;
       align-items: center; justify-content: center; padding: 16px; text-align: center;
-      background: rgb(18 18 18 / 0.85); color: #c8c8c8; font: 14px/1.4 system-ui, sans-serif;
+      background: rgb(10 10 20 / 0.88); color: #c8cbe0; font: 14px/1.4 system-ui, sans-serif; z-index: 50;
     }
-    #device-lost strong { color: #e3e3e3; font-size: 16px; }
+    #device-lost strong { color: #eef0ff; font-size: 16px; }
     #device-lost p { margin: 0; max-width: 60ch; }
-    #device-lost small { color: #8c8c8c; font-size: 12px; }
+    #device-lost small { color: #8d91b4; font-size: 12px; }
     #device-lost div { display: flex; gap: 8px; }
     #device-lost button {
-      padding: 6px 14px; border: 1px solid #3a3a3a; border-radius: 4px;
-      background: #232323; color: #e3e3e3; font: inherit; cursor: pointer;
+      padding: 6px 14px; border: 1px solid #2a2d46; border-radius: 6px;
+      background: #000; color: #eef0ff; font: inherit; cursor: pointer;
     }
-    #device-lost button:hover { background: #303030; }
-    #device-lost button:last-child { background: #2d8ceb; border-color: #2d8ceb; }
-    #device-lost button:last-child:hover { background: #4aa0f5; }
+    #device-lost button:last-child { background: #667eea; border-color: #667eea; }
     #device-lost button:disabled { opacity: 0.6; cursor: default; }
   </style>
+  <!-- Studio: the assistant panel (studio/web in the repository, copied next to this page by studio/build/package.sh). -->
+  <link rel="stylesheet" href="studio/studio.css">
+  <script src="studio/config.js"></script>
+  <script src="studio/studio.js" defer></script>
 </head>
 <body>
   <canvas id="effectcraft_canvas"></canvas>
-  <div id="loading"><img src="favicon.svg" alt=""><div id="status">Loading EffectCraft…</div></div>
+  <div id="loading">
+    <p id="status">Загрузка AI-After Effects&hellip;</p>
+    <div id="ap_track"><div id="ap_bar"></div></div>
+    <p id="ap_progress"></p>
+    <p id="ap_problem" hidden></p>
+    <p id="stalled">Загрузка идёт дольше обычного. Если AI-After Effects не запускается, файлы могли не скачаться
+      или относиться к другой версии страницы. <a href="">Обновите страницу</a>; подробности — в консоли браузера (F12).</p>
+  </div>
   <script type="module">
     import init, * as ec from "./effectcraft_web.js";
     const t0 = performance.now();
     window.effectcraftLoad = {};
     // The agent / test API: the desktop control channel as promises (docs/web.md).
-    window.effectcraft = {
+    const api = {
       request: (method, params) => ec.request(method, params ?? {}),
       execute: (command, params) => ec.request("engine.execute", { command, params: params ?? {} }),
       commands: () => ec.request("engine.commands", {}),
@@ -67,54 +91,109 @@
         }
         return ec.addFile(name, bytes);
       },
-      info: () => ({
-        ...ec.info(),
-        crossOriginIsolated: self.crossOriginIsolated,
-        webgpu: !!navigator.gpu,
-        serviceWorker: (() => {
-          try {
-            return !!(navigator.serviceWorker && navigator.serviceWorker.controller);
-          } catch {
-            return false;
-          }
-        })(),
-        load: window.effectcraftLoad,
-      }),
-      // Browser storage (OPFS / IndexedDB): save without downloading, list, remove, wait for writes.
+      info: () => ({ ...ec.info(), crossOriginIsolated: self.crossOriginIsolated, webgpu: !!navigator.gpu, load: window.effectcraftLoad }),
       saveToBrowser: (path) => ec.saveToBrowser(path ?? undefined),
       listStored: () => ec.listStored(),
       removeStored: (path) => ec.removeStored(path),
       flush: () => ec.flush(),
-      // A frame rendered in a frame worker (its GPU by default) vs the page's CPU: {maxDiff, meanDiff, over4, …}.
       workerFrameCheck: (params) => ec.workerFrameCheck(params ?? {}).then(JSON.parse),
     };
-    // Offline start and install (PWA): the service worker caches the app's files.
-    if (!new URLSearchParams(location.search).has("nosw")) {
+    window.effectcraft = api;
+    // AI-After Effects: the bridge the assistant panel (studio/) drives the editor with.
+    const bytesOf = (b) => (b instanceof Uint8Array ? b : new Uint8Array(b));
+    window.aiaftereffects = {
+      product: "AI-After Effects",
+      takesSaves: false,
+      request: api.request,
+      execute: api.execute,
+      commands: api.commands,
+      inspect: api.inspect,
+      screenshot: () => ec.request("render.frame", { base64: true, maxSide: 1280 }),
+      renderFrame: api.renderFrame,
+      // Open a project (.ecproj, .ecprojx, .aep) or import media / Lottie JSON from bytes.
+      open: (name, bytes) => ec.addFile(String(name || "file"), bytesOf(bytes)),
+      // A file a project uses (its footage), put where the project looks for it, not imported.
+      putFile: (name, bytes) => ec.putFile(String(name || "file"), bytesOf(bytes)),
+      readFile: (path) => ec.readFile(path),
+      files: () => ec.files(),
+      addFont: async (name, bytes) => ({ faces: ec.addFont(String(name || "font.ttf"), bytesOf(bytes)) }),
+      wantsKeyboard: () => { try { return ec.wantsKeyboard(); } catch { return false; } },
+      flush: api.flush,
+    };
+    // An older visit's offline copy (the upstream service worker) would keep serving old files.
+    try {
+      if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+        navigator.serviceWorker.getRegistrations().then((rs) => rs.forEach((r) => r.unregister())).catch(() => {});
+      }
+    } catch { /* not available */ }
+
+    const MARKER = "ai-aftereffects-parts 1";
+    // The WebAssembly from app/parts.txt: gzip cut into parts (studio/build/package.sh). A
+    // development build (cargo xtask web) has the plain .wasm next to the page instead.
+    async function wasmBytes(fresh) {
+      const opts = fresh ? { cache: "reload" } : {};
+      const listResponse = await fetch("app/parts.txt", { cache: "no-store" });
+      const type = listResponse.headers.get("Content-Type") || "";
+      if (!listResponse.ok || type.startsWith("text/html")) {
+        const r = await fetch("effectcraft_web_bg.wasm", opts);
+        if (!r.ok) throw new Error("effectcraft_web_bg.wasm: HTTP " + r.status);
+        return await r.arrayBuffer();
+      }
+      const lines = (await listResponse.text()).split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+      if (lines[0] !== MARKER) throw new Error("app/parts.txt is not a parts list");
+      const parts = lines.slice(1).filter((l) => !l.startsWith("#"));
+      if (!parts.length || parts.some((p) => !/^[A-Za-z0-9._-]+$/.test(p) || p.startsWith("."))) throw new Error("app/parts.txt is not a parts list");
+      const buffers = [];
+      for (const part of parts) {
+        const r = await fetch("app/" + part, opts);
+        if (!r.ok) throw new Error("app/" + part + ": HTTP " + r.status);
+        if ((r.headers.get("Content-Type") || "").startsWith("text/html")) throw new Error("app/" + part + ": the server sent a web page, not the file");
+        buffers.push(await r.arrayBuffer());
+      }
+      const joined = new Blob(buffers);
+      const head = new Uint8Array(await joined.slice(0, 4).arrayBuffer());
+      // A server that recognised the gzip may have sent it with Content-Encoding: the browser
+      // inflated it already.
+      if (head[0] === 0 && head[1] === 0x61 && head[2] === 0x73 && head[3] === 0x6d) return await joined.arrayBuffer();
+      if (head[0] !== 0x1f || head[1] !== 0x8b) throw new Error("the download is not the app's WebAssembly");
+      if (typeof DecompressionStream === "undefined") throw new Error("the browser is too old to unpack the app (Chrome 80+, Firefox 113+, Safari 16.4+)");
       try {
-        if ("serviceWorker" in navigator && navigator.serviceWorker) {
-          navigator.serviceWorker.register("sw.js").catch((e) => console.warn("service worker:", e));
-        }
+        return await new Response(joined.stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
       } catch (e) {
-        console.warn("service worker:", e);
+        throw new Error("the download is damaged (" + (e && e.message || e) + ")");
       }
     }
+
+    async function compile() {
+      let last;
+      for (const [i, wait] of [0, 1, 3].entries()) {
+        if (wait) {
+          const s = document.getElementById("status");
+          if (s) s.textContent = "Загрузка AI-After Effects… (скачать не вышло, пробую ещё раз)";
+          await new Promise((r) => setTimeout(r, wait * 1000));
+        }
+        try {
+          return await WebAssembly.compile(await wasmBytes(i > 0));
+        } catch (e) {
+          last = e;
+          console.error("ai-aftereffects-boot: could not start AI-After Effects:", e);
+        }
+      }
+      throw last;
+    }
+
     try {
       // Compile once: the page and its render workers instantiate the same module.
-      const wasmUrl = new URL("effectcraft_web_bg.wasm", location.href);
-      let module;
-      try {
-        module = await WebAssembly.compileStreaming(fetch(wasmUrl));
-      } catch {
-        module = await WebAssembly.compile(await (await fetch(wasmUrl)).arrayBuffer());
-      }
+      const module = await compile();
       window.effectcraftModule = module;
       await init({ module_or_path: module });
       window.effectcraftLoad.wasmMs = performance.now() - t0;
       await ec.start("effectcraft_canvas");
       window.effectcraftLoad.readyMs = performance.now() - t0;
+      window.dispatchEvent(new CustomEvent("aiaftereffects:ready"));
     } catch (e) {
       const s = document.getElementById("status");
-      if (s) { s.className = "err"; s.textContent = "EffectCraft failed to start:\n" + (e && e.stack || e); }
+      if (s) { s.className = "err"; s.textContent = "AI-After Effects не запустился:\n" + (e && e.message || e) + "\n\nОбновите страницу. Нужен свежий Chrome, Edge, Firefox или Safari."; }
       window.effectcraftLoad.error = String(e);
       throw e;
     }

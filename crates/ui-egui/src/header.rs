@@ -1,11 +1,11 @@
-//! The Tools bar: home, the tool slots, tool options, snapping, workspaces and the community
-//! buttons (Discord is always one click away).
+//! The Tools bar: home, the tool slots, tool options, snapping, workspaces and, in the browser,
+//! the house that leads back to the site (AI-After Effects).
 
 use crate::i18n::{tr, tr_args};
 use egui::{Align2, Color32, Rect, Sense, Stroke, StrokeKind, pos2, vec2};
 use serde_json::json;
 
-use crate::icons::{self, Icon};
+use crate::icons::Icon;
 use crate::state::Tool;
 use crate::theme::Tokens;
 use crate::widgets;
@@ -31,6 +31,7 @@ pub fn show(app: &mut EffectcraftApp, ui: &mut egui::Ui, rect: Rect) {
     let x = tool_slots(app, ui, &p, x, cy);
     let x = tool_options_bar(app, ui, &p, x + 10.0, cy);
     let x = snapping_toggle(app, ui, &p, x, cy);
+    let x = ai_chip(app, ui, &p, x, cy);
     right_side(app, ui, &p, rect, x, cy);
 }
 
@@ -40,9 +41,9 @@ fn brand_and_home(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter
     let brand = Rect::from_min_size(pos2(x, cy - 12.0), vec2(24.0, 24.0));
     paint_logo(p, brand);
     let bresp = ui.interact(brand, egui::Id::unique("brand"), Sense::click());
-    app.auto.add_response("header.about", &bresp, "About EffectCraft");
+    app.auto.add_response("header.about", &bresp, "About AI-After Effects");
     widgets::focus_outline(ui, &bresp, &t);
-    if bresp.on_hover_text(tr("About EffectCraft")).clicked() {
+    if bresp.on_hover_text("О программе AI-After Effects").clicked() {
         app.dialog = Some(Dialog::About);
     }
     x += 32.0;
@@ -295,34 +296,92 @@ fn right_side(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, re
     workspace_tabs(app, ui, p, rx, left, cy);
 }
 
-/// The Discord pill and the GitHub and website buttons, right to left from `rx`; returns the new `rx`.
-fn community_buttons(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, mut rx: f32, cy: f32) -> f32 {
+/// AI-After Effects (web): the house that leads back to the site the editor lives on, at the right
+/// end of the bar (`Hooks::go_home`); returns the new `rx`. No community or internet links.
+fn community_buttons(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, rx: f32, cy: f32) -> f32 {
     let t = app.tokens;
-    // The pill fits its label (icon, gap, text) with even padding: it was a fixed 104 px with the
-    // text at its left, which left a wide gap on the right (#581).
-    let label = p.layout_no_wrap(tr("Discord").to_string(), Tokens::semibold(12.0), Color32::WHITE);
-    let discord = Rect::from_min_max(pos2(rx - (10.0 + 14.0 + 6.0 + label.size().x + 12.0), cy - 13.0), pos2(rx, cy + 13.0));
-    let dresp = ui.interact(discord, egui::Id::unique("hdr-discord"), Sense::click());
-    let dc = Color32::from_rgb(0x58, 0x65, 0xf2);
-    p.rect_filled(discord, 13.0, if dresp.hovered() { dc.gamma_multiply(1.2) } else { dc });
-    icons::paint(p, Rect::from_center_size(pos2(discord.min.x + 17.0, cy), vec2(14.0, 14.0)), Icon::Chat, Color32::WHITE);
-    p.galley(pos2(discord.min.x + 30.0, cy - label.size().y / 2.0), label, Color32::WHITE);
-    app.auto.add("header.discord", discord, "Join the ArtCraft Discord");
-    if dresp.on_hover_text(tr("Join the ArtCraft community on Discord")).clicked() {
-        let _ = app.session.execute("help.discord", json!({}));
+    if app.hooks.go_home.is_none() {
+        return rx;
     }
-    rx = discord.min.x - 6.0;
-    for (id, icon, tip, cmd) in
-        [("hdr-github", Icon::Code, "EffectCraft on GitHub", "help.github"), ("hdr-web", Icon::Globe, "EffectCraft on getartcraft.com", "help.appPage")]
+    let r = Rect::from_min_max(pos2(rx - 30.0, cy - 13.0), pos2(rx, cy + 13.0));
+    let resp = ui.interact(r, egui::Id::unique("hdr-house"), Sense::click());
+    let tip = "На сайт";
+    let resp = resp.on_hover_text(tip).on_hover_cursor(egui::CursorIcon::PointingHand);
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, true, tip));
+    let fill = if resp.hovered() { t.accent_hover } else { t.accent };
+    p.rect_filled(r, 6.0, fill);
+    let ink = if t.kind == crate::theme::ThemeKind::Dark { Color32::from_rgb(0x0b, 0x12, 0x20) } else { Color32::WHITE };
+    paint_house(p, r.shrink2(vec2(7.0, 6.0)), ink, fill);
+    app.auto.add("header.home.site", r, "To the site");
+    if resp.clicked()
+        && let Some(go) = app.hooks.go_home.as_ref()
     {
-        let r = Rect::from_min_max(pos2(rx - 26.0, cy - 13.0), pos2(rx, cy + 13.0));
-        if widgets::icon_button(ui, r, icon, false, &t, egui::Id::unique(id)).on_hover_text(tip).clicked() {
-            let _ = app.session.execute(cmd, json!({}));
-        }
-        app.auto.add(&format!("header.{}", &id[4..]), r, tip);
-        rx = r.min.x - 4.0;
+        go();
     }
-    rx
+    r.min.x - 8.0
+}
+
+/// Whether text is being edited or one text layer is selected (the AI chip's subject).
+fn text_selected(app: &EffectcraftApp) -> bool {
+    if app.session.state.text_edit.is_some() {
+        return true;
+    }
+    let [only] = app.session.state.selected_layers.as_slice() else { return false };
+    app.session.active_comp().and_then(|c| c.layer(*only)).is_some_and(|l| matches!(l.source, LayerSource::Text))
+}
+
+/// AI-After Effects (web): the AI chip, a sparkle and «ИИ» on the accent, while text is edited or a
+/// text layer is selected; a click asks the page for its AI menu under the chip
+/// (`Hooks::ai_assist`). Returns the x after it.
+fn ai_chip(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, x: f32, cy: f32) -> f32 {
+    if app.hooks.ai_assist.is_none() || !text_selected(app) {
+        return x;
+    }
+    let t = app.tokens;
+    let label = p.layout_no_wrap("ИИ".to_string(), Tokens::semibold(12.0), Color32::WHITE);
+    let r = Rect::from_min_size(pos2(x + 10.0, cy - 12.0), vec2(label.size().x + 34.0, 24.0));
+    let resp = ui.interact(r, egui::Id::unique("hdr-ai-chip"), Sense::click());
+    let tip = "ИИ для текста: переписать, сократить, перевести, варианты заголовка";
+    let resp = resp.on_hover_text(tip).on_hover_cursor(egui::CursorIcon::PointingHand);
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::Role::Button, true, tip));
+    let fill = if resp.hovered() { t.accent_hover } else { t.accent };
+    p.rect_filled(r, 12.0, fill);
+    let ink = if t.kind == crate::theme::ThemeKind::Dark { Color32::from_rgb(0x0b, 0x12, 0x20) } else { Color32::WHITE };
+    // A four-pointed sparkle drawn in code.
+    let c = pos2(r.min.x + 13.0, r.center().y);
+    let (o, i) = (6.0, 1.6);
+    let star = vec![
+        pos2(c.x, c.y - o),
+        pos2(c.x + i, c.y - i),
+        pos2(c.x + o, c.y),
+        pos2(c.x + i, c.y + i),
+        pos2(c.x, c.y + o),
+        pos2(c.x - i, c.y + i),
+        pos2(c.x - o, c.y),
+        pos2(c.x - i, c.y - i),
+    ];
+    p.add(egui::Shape::convex_polygon(star, ink, Stroke::NONE));
+    p.galley(pos2(r.min.x + 24.0, r.center().y - label.size().y / 2.0), label, ink);
+    app.auto.add("header.ai", r, "AI help for the selected text");
+    if resp.clicked()
+        && let Some(ai) = app.hooks.ai_assist.as_ref()
+    {
+        // egui points → CSS pixels from the canvas's top left (the interface may be scaled).
+        let zoom = ui.ctx().zoom_factor();
+        ai(r.min.x * zoom, (r.max.y + 6.0) * zoom);
+    }
+    r.max.x
+}
+
+/// A house drawn in code: a roof and a body with a door.
+fn paint_house(p: &egui::Painter, r: Rect, col: Color32, bg: Color32) {
+    let w = r.width();
+    let roof = vec![pos2(r.center().x, r.min.y), pos2(r.max.x, r.min.y + w * 0.45), pos2(r.min.x, r.min.y + w * 0.45)];
+    p.add(egui::Shape::convex_polygon(roof, col, Stroke::NONE));
+    let body = Rect::from_min_max(pos2(r.min.x + w * 0.16, r.min.y + w * 0.42), pos2(r.max.x - w * 0.16, r.max.y));
+    p.rect_filled(body, 1.0, col);
+    let door = Rect::from_min_max(pos2(body.center().x - w * 0.1, body.max.y - body.height() * 0.55), pos2(body.center().x + w * 0.1, body.max.y));
+    p.rect_filled(door, 0.5, bg);
 }
 
 /// Appearance: Sync with System, Light, Dark (a monitor, sun or moon), one click to the next;
@@ -901,27 +960,30 @@ fn run_workspace_command(app: &mut EffectcraftApp, ui: &egui::Ui, id: &str) {
     }
 }
 
-/// The ArtCraft mark as supplied in `docs/brand` (the README's and getartcraft.com's logo; used
-/// unmodified, see `docs/brand/LICENSE-brand.txt`).
-static ARTCRAFT_MARK: &[u8] = include_bytes!("../../../docs/brand/artcraft-mark.png");
-
-/// The ArtCraft mark in `r` (decoded once into a mipmapped texture, so it stays crisp from the
-/// 24 px Tools bar to the About dialog). Nothing is drawn if it can't be decoded.
+/// AI-After Effects' mark, drawn in code: a dark rounded tile with a white frame (the frame the
+/// AI- apps share), a keyframe diamond and the arc of its motion path.
 pub fn paint_logo(p: &egui::Painter, r: Rect) {
-    let ctx = p.ctx();
-    let id = egui::Id::unique("artcraft-mark");
-    let tex = ctx.data(|d| d.get_temp::<Option<egui::TextureHandle>>(id)).unwrap_or_else(|| {
-        let tex = image::load_from_memory_with_format(ARTCRAFT_MARK, image::ImageFormat::Png).ok().map(|img| {
-            let img = img.to_rgba8();
-            let ci = egui::ColorImage::from_rgba_unmultiplied([img.width() as usize, img.height() as usize], img.as_raw());
-            ctx.load_texture("artcraft-mark", ci, egui::TextureOptions::LINEAR.with_mipmap_mode(Some(egui::TextureFilter::Linear)))
-        });
-        ctx.data_mut(|d| d.insert_temp(id, tex.clone()));
-        tex
-    });
-    if let Some(t) = tex {
-        p.image(t.id(), r, Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)), Color32::WHITE);
+    let s = r.width().min(r.height());
+    if !s.is_finite() || s <= 0.0 {
+        return;
     }
+    let r = Rect::from_center_size(r.center(), vec2(s, s));
+    p.rect_filled(r, s * 0.22, Color32::from_rgb(0x0c, 0x0d, 0x17));
+    let inner = r.shrink(s * 0.16);
+    p.rect_stroke(inner, s * 0.06, Stroke::new((s * 0.07).max(1.0), Color32::WHITE), StrokeKind::Middle);
+    // The motion path: a dotted arc from the lower left to the diamond.
+    let c = inner.center();
+    let k = inner.width();
+    let accent = Color32::from_rgb(0x8a, 0x9b, 0xff);
+    for i in 0..5 {
+        let f = i as f32 / 5.0;
+        let pt = pos2(inner.min.x + k * (0.18 + 0.42 * f), inner.max.y - k * (0.2 + 0.5 * f * (2.0 - f)));
+        p.circle_filled(pt, (s * 0.035).max(0.8), accent);
+    }
+    // The keyframe diamond.
+    let d = pos2(c.x + k * 0.16, c.y - k * 0.12);
+    let h = k * 0.2;
+    p.add(egui::Shape::convex_polygon(vec![pos2(d.x, d.y - h), pos2(d.x + h, d.y), pos2(d.x, d.y + h), pos2(d.x - h, d.y)], Color32::WHITE, Stroke::NONE));
 }
 
 #[cfg(test)]

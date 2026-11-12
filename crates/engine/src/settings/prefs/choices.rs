@@ -27,13 +27,13 @@ pub const WINDOW_GRAPHICS: &[(&str, &str)] = &[("Automatic", "auto"), ("OpenGL (
 pub const APPEARANCE_MODES: &[(&str, &str)] = &[("Sync with System", "auto"), ("Dark", "dark"), ("Light", "light")];
 
 /// The dark family of themes: (label, `appearance.darkTheme` value).
-pub const DARK_THEMES: &[(&str, &str)] = &[("Dark", "dark"), ("Darker", "darker")];
+pub const DARK_THEMES: &[(&str, &str)] = &[("Brand", "brand"), ("Dark", "dark"), ("Darker", "darker")];
 
 /// The light family of themes: (label, `appearance.lightTheme` value).
 pub const LIGHT_THEMES: &[(&str, &str)] = &[("Light", "light")];
 
 /// Every theme (the legacy single-theme `appearance.theme`).
-pub const THEMES: &[(&str, &str)] = &[("Dark", "dark"), ("Darker", "darker"), ("Light", "light")];
+pub const THEMES: &[(&str, &str)] = &[("Brand", "brand"), ("Dark", "dark"), ("Darker", "darker"), ("Light", "light")];
 
 /// The settings whose value must be one of their choices.
 pub(super) fn choices(key: &str) -> Option<&'static [(&'static str, &'static str)]> {

@@ -622,8 +622,8 @@ pub(super) fn file_dialog(app: &mut EffectcraftApp, id: &str, params: &Value) ->
     // folder, as After Effects does (#2788); an untitled project starts from Untitled Project.
     // Save a Copy adds ` copy` (`suffix`): it never writes over the open project's file.
     let project_as = |suffix: &str, ext: &str| -> std::borrow::Cow<'static, str> {
-        let Some(path) = app.session.path.as_deref().map(std::path::Path::new) else { return format!("Untitled Project{suffix}.{ext}").into() };
-        let stem = path.file_stem().map(|s| s.to_string_lossy().into_owned()).unwrap_or_else(|| "Untitled Project".into());
+        let Some(path) = app.session.path.as_deref().map(std::path::Path::new) else { return format!("Без названия{suffix}.{ext}").into() };
+        let stem = path.file_stem().map(|s| s.to_string_lossy().into_owned()).unwrap_or_else(|| "Без названия".into());
         path.with_file_name(format!("{stem}{suffix}.{ext}")).to_string_lossy().into_owned().into()
     };
     let (key, ask) = match id {

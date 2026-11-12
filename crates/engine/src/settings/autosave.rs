@@ -88,7 +88,7 @@ impl PendingWrite {
 
 /// File-name stem of a project (`/a/Intro.ecproj` → `Intro`; untitled → `Untitled Project`).
 pub fn project_stem(path: Option<&str>) -> String {
-    path.and_then(|p| Path::new(p).file_stem()).map(|s| s.to_string_lossy().to_string()).unwrap_or_else(|| "Untitled Project".into())
+    path.and_then(|p| Path::new(p).file_stem()).map(|s| s.to_string_lossy().to_string()).unwrap_or_else(|| "Без названия".into())
 }
 
 /// `<stem> auto-save N.ecproj`.

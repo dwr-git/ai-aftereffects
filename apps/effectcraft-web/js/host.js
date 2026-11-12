@@ -710,29 +710,29 @@ export function showDeviceLost(message, kept) {
   box.id = "device-lost";
   box.setAttribute("role", "alertdialog");
   const title = document.createElement("strong");
-  title.textContent = "The graphics device was lost";
+  title.textContent = "Связь с видеокартой потеряна";
   const text = document.createElement("p");
   text.textContent =
-    "EffectCraft can't update the display any more. Your project is still open. " +
-    (kept ? "Reload to continue: the project and its unsaved changes come back." : "This session isn't kept in browser storage: save the project before you reload.");
+    "AI-After Effects больше не может обновлять изображение. Проект всё ещё открыт. " +
+    (kept ? "Обновите страницу, чтобы продолжить: проект и несохранённые изменения вернутся." : "Этот сеанс не хранится в браузере: сохраните проект перед обновлением страницы.");
   const detail = document.createElement("small");
   detail.textContent = message;
   const save = document.createElement("button");
-  save.textContent = "Save Project";
+  save.textContent = "Сохранить проект";
   save.onclick = () =>
     self.effectcraft
       .execute("file.save", {})
-      .catch(() => self.effectcraft.execute("file.saveAs", { path: "/Untitled Project.ecproj" }))
-      .catch((e) => (text.textContent = `Saving failed: ${e?.message || e}`));
+      .catch(() => self.effectcraft.execute("file.saveAs", { path: "/Без названия.ecproj" }))
+      .catch((e) => (text.textContent = `Не удалось сохранить: ${e?.message || e}`));
   const reload = document.createElement("button");
-  reload.textContent = "Reload";
+  reload.textContent = "Обновить страницу";
   reload.onclick = async () => {
     reload.disabled = true;
     try {
       await self.effectcraft.flush();
     } catch (e) {
-      text.textContent = `Writing to browser storage failed (${e?.message || e}). Save the project, or reload anyway and lose the changes.`;
-      reload.textContent = "Reload Anyway";
+      text.textContent = `Не удалось записать в хранилище браузера (${e?.message || e}). Сохраните проект или обновите страницу, потеряв изменения.`;
+      reload.textContent = "Всё равно обновить";
       reload.disabled = false;
       reload.onclick = () => location.reload();
       return;

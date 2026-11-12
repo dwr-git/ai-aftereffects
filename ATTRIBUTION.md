@@ -137,22 +137,16 @@ configuration from these Apache-2.0 projects:
 | `crates/engine/src/tests/fixtures/object-matte-0.22.ecproj` | lisn0 | Original work, synthetic project saved by EffectCraft 0.22.0 | MIT OR Apache-2.0 |
 | `crates/engine/src/tests/fixtures/tracked-0.22.ecproj` | arnav-hiwarkar | Original work, synthetic project saved by EffectCraft 0.22.0 | MIT OR Apache-2.0 |
 
-## First-party brand marks
+## AI-After Effects
 
-The ArtCraft name, wordmark and logos are trademarks of the ArtCraft Team. They are not open source and are not
-covered by the project licence; they may be used only unmodified and only as part of this repository and EffectCraft,
-under [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt). Forks and modified versions must remove them
-(AGENTS.md §1.8).
+AI-After Effects (this fork) carries none of the ArtCraft marks: `docs/brand/` was removed, as its licence requires
+of modified versions. The Tools bar and the About window draw AI-After Effects' own mark in code.
 
 | File | Author | Source | Licence |
 |---|---|---|---|
-| `docs/brand/artcraft-logo-white.png` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft wordmark, light ink for dark backgrounds) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-logo-white.svg` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft wordmark, light ink for dark backgrounds) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-logo.png` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft wordmark (symbol + "ARTCRAFT"), dark ink for light backgrounds) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-logo.svg` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft wordmark (symbol + "ARTCRAFT"), dark ink for light backgrounds) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-mark-black.png` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft symbol ("A" mark), black) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-mark-black.svg` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft symbol ("A" mark), black) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-mark.png` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft symbol ("A" mark), blue) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
-| `docs/brand/artcraft-mark.svg` | ArtCraft Team | Original work: first-party ArtCraft brand mark (ArtCraft symbol ("A" mark), blue) | ArtCraft brand terms, not open source (`docs/brand/LICENSE-brand.txt`) |
+| `studio/web/favicon.png`, `studio/web/apple-touch-icon.png` | AI-After Effects contributors | Original work, drawn for AI-After Effects (Pillow, original shapes): a keyframe diamond and a dotted motion path in the frame the other AI- apps share | MIT OR Apache-2.0 |
+| `crates/ui-egui/src/header.rs` (`paint_logo`, `paint_house`) | AI-After Effects contributors | Original work, drawn in code: the app mark and the house button | MIT OR Apache-2.0 |
+| `crates/ui-egui/src/theme.rs` (`paint_brand_backdrop`) | AI-After Effects contributors | Original work, drawn in code: the Brand theme's backdrop (gradient, glows, grid) | MIT OR Apache-2.0 |
+| `fonts/*.ttf` in the packaged site (not in the repository) | Liberation: Red Hat / Google; Carlito, Caladea: Google (Łukasz Dziedzic, Carolina Giovagnoli, Andrés Torresi) | Ubuntu packages fonts-liberation, fonts-crosextra-carlito, fonts-crosextra-caladea, fetched by CI | OFL-1.1 (licence texts shipped next to them) |
 
 - Appearance theme previews, drawn procedurally from original shapes: `crates/ui-egui/src/panels/settings.rs` (original work, MIT OR Apache-2.0).

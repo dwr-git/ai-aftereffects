@@ -37,11 +37,16 @@ pub(crate) fn set_worker() {
 /// `rel` resolved against the page's URL (`worker.js`, `audio-worklet.js`); `""` = the page's
 /// folder.
 pub fn page_url(rel: &str) -> String {
-    let href = web_sys::window().and_then(|w| w.location().href().ok()).unwrap_or_default();
+    // The document's base URL: AI-After Effects serves each build's page from `index.php` with a
+    // `<base href="b/<N>/">`, and the workers and the worklet sit next to that build's page.
+    let doc_base = web_sys::window().and_then(|w| w.document()).and_then(|d| d.base_uri().ok().flatten());
+    let href = doc_base.or_else(|| web_sys::window().and_then(|w| w.location().href().ok())).unwrap_or_default();
     web_sys::Url::new_with_base(if rel.is_empty() { "./" } else { rel }, &href).map(|u| u.href()).unwrap_or_else(|_| rel.to_string())
 }
 
 thread_local! {
+    /// Whether a text field had the keyboard at the last frame (`aiaftereffects.wantsKeyboard()`).
+    static TEXT_FOCUS: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
     static ACTIONS: RefCell<Vec<Action>> = const { RefCell::new(Vec::new()) };
     static CTX: RefCell<Option<egui::Context>> = const { RefCell::new(None) };
 }
@@ -59,6 +64,27 @@ pub fn repaint() {
             c.request_repaint();
         }
     });
+}
+
+/// Whether a text field of the editor has the keyboard.
+pub fn text_edit_focused() -> bool {
+    TEXT_FOCUS.with(std::cell::Cell::get)
+}
+
+/// Leave the editor for the site it lives on: `window.STUDIO_CONFIG.homeUrl` (studio/config.js,
+/// made absolute by the panel), one level up without it.
+fn go_home() {
+    let Some(window) = web_sys::window() else { return };
+    let url = js_sys::Reflect::get(&window, &"STUDIO_CONFIG".into())
+        .ok()
+        .filter(|c| c.is_object())
+        .and_then(|c| js_sys::Reflect::get(&c, &"homeUrl".into()).ok())
+        .and_then(|u| u.as_string())
+        .filter(|u| !u.trim().is_empty())
+        .unwrap_or_else(|| "../".to_string());
+    if let Err(e) = window.location().set_href(&url) {
+        log::error!("couldn't go to {url}: {e:?}");
+    }
 }
 
 /// Open a project or import media from table paths (picked or dropped files).
@@ -121,6 +147,9 @@ impl eframe::App for WebApp {
             f(&mut self.app);
         }
         self.app.tick(ctx, frame);
+        // AI-After Effects: the page shows whether the project has unsaved changes.
+        api::dirty(self.app.session.is_dirty());
+        TEXT_FOCUS.with(|f| f.set(ctx.text_edit_focused()));
         // eframe on the web ignores `ViewportCommand::Title`: the tab title follows the open document here.
         if self.app.window_title() != self.document_title {
             self.document_title = self.app.window_title().to_owned();
@@ -218,20 +247,24 @@ fn install_hooks(app: &mut EffectcraftApp) {
     // Save As would replace the open project's file; Cancel cancels. A name that is already in
     // browser storage asks before replacing it, as the desktop's save dialogs do.
     app.hooks.pick_save = Some(Box::new(|name: &str| {
-        let name = if name.is_empty() { "Untitled Project.ecproj" } else { name };
+        let name = if name.is_empty() { "Без названия.ecproj" } else { name };
         if !std::path::Path::new(name).extension().is_some_and(|e| e.eq_ignore_ascii_case("ecproj") || e.eq_ignore_ascii_case("ecprojx")) {
             return Some(files::path_for(name));
         }
         let window = web_sys::window()?;
-        let typed = window.prompt_with_message_and_default("Save project as:", name).ok().flatten();
+        let typed = window.prompt_with_message_and_default("Сохранить проект как:", name).ok().flatten();
         let typed = crate::store::typed_save_name(name, typed)?;
         let path = files::path_for(&typed);
-        if files::get(&path).is_some() && !window.confirm_with_message(&format!("{typed} already exists. Replace it?")).unwrap_or(false) {
+        if files::get(&path).is_some() && !window.confirm_with_message(&format!("{typed} уже есть. Заменить?")).unwrap_or(false) {
             return None;
         }
         Some(path)
     }));
     app.hooks.audio_device = Some(Box::new(audio::open));
+    // AI-After Effects: the house at the right of the Tools bar goes back to the site; the AI
+    // chip by text asks the page for its AI menu.
+    app.hooks.go_home = Some(Box::new(go_home));
+    app.hooks.ai_assist = Some(Box::new(api::ai_menu));
     app.hooks.audio_devices = Some(Box::new(|| vec!["Browser default output".into()]));
 }
 
@@ -243,7 +276,8 @@ pub async fn start(canvas_id: String) -> Result<(), JsValue> {
     // chosen in Settings still wins.
     let navigator = web_sys::window().map(|w| w.navigator());
     let browser = navigator.iter().flat_map(|n| n.languages().iter().filter_map(|v| v.as_string()).collect::<Vec<_>>());
-    effectcraft_ui_egui::i18n::set_system_locales(query_value("lang"), browser.collect());
+    // AI-After Effects: Russian unless the address asks for another language (`?lang=`).
+    effectcraft_ui_egui::i18n::set_system_locales(Some(query_value("lang").unwrap_or_else(|| "ru".into())), browser.collect());
     let doc = web_sys::window().and_then(|w| w.document()).ok_or("no document")?;
     let canvas: web_sys::HtmlCanvasElement = doc.get_element_by_id(&canvas_id).ok_or("no canvas")?.dyn_into()?;
     install_canvas_shortcuts(&canvas);

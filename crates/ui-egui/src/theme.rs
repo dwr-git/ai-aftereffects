@@ -15,7 +15,10 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ThemeKind {
+    /// AI-After Effects' Brand theme: navy chrome, the brand's blue-violet accent, solid black
+    /// menus and windows with a strong shadow, and the brand backdrop round the composition.
     #[default]
+    Brand,
     Dark,
     Darker,
     Light,
@@ -24,7 +27,8 @@ pub enum ThemeKind {
 impl ThemeKind {
     pub fn from_name(s: &str) -> Option<ThemeKind> {
         match s.to_ascii_lowercase().as_str() {
-            "dark" | "default" => Some(ThemeKind::Dark),
+            "brand" | "default" => Some(ThemeKind::Brand),
+            "dark" => Some(ThemeKind::Dark),
             "darker" | "darkest" => Some(ThemeKind::Darker),
             "light" => Some(ThemeKind::Light),
             _ => None,
@@ -34,6 +38,7 @@ impl ThemeKind {
     /// The settings value (`appearance.theme`, `appearance.darkTheme`, `appearance.lightTheme`).
     pub fn name(self) -> &'static str {
         match self {
+            ThemeKind::Brand => "brand",
             ThemeKind::Dark => "dark",
             ThemeKind::Darker => "darker",
             ThemeKind::Light => "light",
@@ -198,7 +203,98 @@ impl Tokens {
             gradients: true,
         };
         match kind {
-            ThemeKind::Dark => dark,
+            // AI-After Effects' Dark: the NeuDark palette (chrome #262D3A, cards #282F3D, canvas
+            // #1B202A, fields #202632, text #E4EBF6 / #C4CFE0 / #A0ADC2, accent #5CA8FF).
+            ThemeKind::Dark => Tokens {
+                app_bg: Color32::from_rgb(0x1c, 0x22, 0x2c),
+                header_bg: Color32::from_rgb(0x26, 0x2d, 0x3a),
+                panel_bg: Color32::from_rgb(0x28, 0x2f, 0x3d),
+                tab_text: Color32::from_rgb(0xa0, 0xad, 0xc2),
+                tab_text_active: Color32::from_rgb(0xe4, 0xeb, 0xf6),
+                focus: Color32::from_rgb(0x5c, 0xa8, 0xff),
+                accent: Color32::from_rgb(0x5c, 0xa8, 0xff),
+                accent_hover: Color32::from_rgb(0x8e, 0xc6, 0xff),
+                text: Color32::from_rgb(0xc4, 0xcf, 0xe0),
+                text_dim: Color32::from_rgb(0xa0, 0xad, 0xc2),
+                text_faint: Color32::from_rgb(0x84, 0x91, 0xa8),
+                icon: Color32::from_rgb(0xc4, 0xcf, 0xe0),
+                icon_active: Color32::from_rgb(0xf2, 0xf6, 0xff),
+                hover: Color32::from_rgb(0x32, 0x3a, 0x4a),
+                pressed: Color32::from_rgb(0x3b, 0x45, 0x58),
+                field_bg: Color32::from_rgb(0x20, 0x26, 0x32),
+                field_border: Color32::from_rgb(0x46, 0x51, 0x66),
+                separator: Color32::from_rgb(0x1c, 0x22, 0x2c),
+                row: Color32::from_rgb(0x28, 0x2f, 0x3d),
+                row_alt: Color32::from_rgb(0x2c, 0x33, 0x42),
+                row_selected: Color32::from_rgb(0x2c, 0x4a, 0x6e),
+                hot_text: Color32::from_rgb(0x8e, 0xc6, 0xff),
+                tl_bg: Color32::from_rgb(0x22, 0x28, 0x34),
+                tl_ruler_bg: Color32::from_rgb(0x28, 0x2f, 0x3d),
+                tl_ruler_tick: Color32::from_rgb(0x84, 0x91, 0xa8),
+                tl_ruler_text: Color32::from_rgb(0xa0, 0xad, 0xc2),
+                cti: Color32::from_rgb(0x5c, 0xa8, 0xff),
+                work_area: Color32::from_rgb(0x46, 0x51, 0x66),
+                keyframe: Color32::from_rgb(0xb4, 0xc0, 0xd4),
+                keyframe_selected: Color32::from_rgb(0x8e, 0xc6, 0xff),
+                pasteboard: Color32::from_rgb(0x1b, 0x20, 0x2a),
+                timecode: Color32::from_rgb(0x8e, 0xc6, 0xff),
+                fx_header: Color32::from_rgb(0x2d, 0x35, 0x44),
+                fx_header_active: Color32::from_rgb(0x2c, 0x4a, 0x6e),
+                tl_graph_selected: Color32::from_rgb(0x30, 0x38, 0x48),
+                switch_well: Color32::from_rgb(0x1e, 0x24, 0x30),
+                tl_nav_bar: Color32::from_rgb(0x5a, 0x66, 0x7c),
+                tl_work_area_bar: Color32::from_rgb(0x62, 0x6e, 0x86),
+                expr_bg: Color32::from_rgb(0x20, 0x26, 0x32),
+                radius: 8.0,
+                radius_sm: 5.0,
+                ..dark
+            },
+            // The brand gradient's navy (#0a0a0f → #1a1a2e → #16213e) for the chrome, the brand's
+            // blue-violet (#667eea) for the accent; the composition frame keeps its own colour.
+            ThemeKind::Brand => Tokens {
+                app_bg: Color32::from_rgb(0x07, 0x07, 0x0d),
+                header_bg: Color32::from_rgb(0x0c, 0x0d, 0x17),
+                panel_bg: Color32::from_rgb(0x16, 0x18, 0x2a),
+                tab_text: Color32::from_rgb(0xb7, 0xbb, 0xd8),
+                tab_text_active: Color32::WHITE,
+                focus: Color32::from_rgb(0x8a, 0x9b, 0xff),
+                accent: Color32::from_rgb(0x66, 0x7e, 0xea),
+                accent_hover: Color32::from_rgb(0x8a, 0x9b, 0xff),
+                text: Color32::from_rgb(0xee, 0xf0, 0xff),
+                text_dim: Color32::from_rgb(0xb7, 0xbb, 0xd8),
+                text_faint: Color32::from_rgb(0x8d, 0x91, 0xb4),
+                icon: Color32::from_rgb(0xe0, 0xe3, 0xfa),
+                icon_active: Color32::WHITE,
+                hover: Color32::from_rgb(0x22, 0x25, 0x3e),
+                pressed: Color32::from_rgb(0x2d, 0x31, 0x52),
+                field_bg: Color32::from_rgb(0x1f, 0x22, 0x38),
+                field_border: Color32::from_rgb(0x4a, 0x4f, 0x75),
+                separator: Color32::from_rgb(0x2a, 0x2d, 0x46),
+                row: Color32::from_rgb(0x16, 0x18, 0x2a),
+                row_alt: Color32::from_rgb(0x1a, 0x1c, 0x31),
+                row_selected: Color32::from_rgb(0x2a, 0x30, 0x66),
+                hot_text: Color32::from_rgb(0xa9, 0xb4, 0xff),
+                tl_bg: Color32::from_rgb(0x11, 0x12, 0x22),
+                tl_ruler_bg: Color32::from_rgb(0x16, 0x18, 0x2a),
+                tl_ruler_tick: Color32::from_rgb(0x8d, 0x91, 0xb4),
+                tl_ruler_text: Color32::from_rgb(0xb7, 0xbb, 0xd8),
+                cti: Color32::from_rgb(0x8a, 0x9b, 0xff),
+                work_area: Color32::from_rgb(0x3a, 0x3e, 0x5e),
+                keyframe: Color32::from_rgb(0xc4, 0xc8, 0xe8),
+                keyframe_selected: Color32::from_rgb(0xa9, 0xb4, 0xff),
+                pasteboard: BRAND_CANVAS,
+                timecode: Color32::from_rgb(0xa9, 0xb4, 0xff),
+                fx_header: Color32::from_rgb(0x1f, 0x22, 0x38),
+                fx_header_active: Color32::from_rgb(0x2a, 0x30, 0x66),
+                tl_graph_selected: Color32::from_rgb(0x22, 0x25, 0x3e),
+                switch_well: Color32::from_rgb(0x0e, 0x0f, 0x1c),
+                tl_nav_bar: Color32::from_rgb(0x4a, 0x4f, 0x75),
+                tl_work_area_bar: Color32::from_rgb(0x55, 0x5b, 0x88),
+                expr_bg: Color32::from_rgb(0x11, 0x12, 0x22),
+                radius: 6.0,
+                radius_sm: 4.0,
+                ..dark
+            },
             ThemeKind::Darker => Tokens {
                 app_bg: Color32::from_rgb(0x08, 0x08, 0x08),
                 header_bg: Color32::from_rgb(0x16, 0x16, 0x16),
@@ -211,43 +307,55 @@ impl Tokens {
                 pasteboard: Color32::from_rgb(0x11, 0x11, 0x11),
                 ..dark
             },
+            // AI-After Effects' Light: the NeuLight palette (chrome #E4ECF6, cards #E6EEF8, canvas
+            // #D6E0ED, fields #DCE6F3, text #1E2C42 / #34445E / #4E5E78, accent #3480E2, accent
+            // text #1652A8).
             ThemeKind::Light => Tokens {
-                app_bg: Color32::from_rgb(0xb4, 0xb4, 0xb4),
-                header_bg: Color32::from_rgb(0xd6, 0xd6, 0xd6),
-                panel_bg: Color32::from_rgb(0xe6, 0xe6, 0xe6),
-                tab_text: Color32::from_rgb(0x5a, 0x5a, 0x5a),
-                tab_text_active: Color32::from_rgb(0x14, 0x14, 0x14),
-                text: Color32::from_rgb(0x22, 0x22, 0x22),
-                text_dim: Color32::from_rgb(0x5a, 0x5a, 0x5a),
-                text_faint: Color32::from_rgb(0x68, 0x68, 0x68),
-                hot_text: Color32::from_rgb(0x00, 0x5a, 0x9c),
-                timecode: Color32::from_rgb(0x00, 0x5a, 0x9c),
-                icon: Color32::from_rgb(0x3c, 0x3c, 0x3c),
-                icon_active: Color32::from_rgb(0x10, 0x10, 0x10),
-                hover: Color32::from_rgb(0xd0, 0xd0, 0xd0),
-                pressed: Color32::from_rgb(0xc0, 0xc0, 0xc0),
-                field_bg: Color32::from_rgb(0xfa, 0xfa, 0xfa),
-                field_border: Color32::from_rgb(0xaa, 0xaa, 0xaa),
-                separator: Color32::from_rgb(0xc8, 0xc8, 0xc8),
-                row: Color32::from_rgb(0xe6, 0xe6, 0xe6),
-                row_alt: Color32::from_rgb(0xde, 0xde, 0xde),
-                row_selected: Color32::from_rgb(0xaa, 0xc8, 0xf0),
-                tl_bg: Color32::from_rgb(0xd2, 0xd2, 0xd2),
-                tl_ruler_bg: Color32::from_rgb(0xe2, 0xe2, 0xe2),
-                tl_ruler_text: Color32::from_rgb(0x50, 0x50, 0x50),
-                pasteboard: Color32::from_rgb(0xa8, 0xa8, 0xa8),
+                app_bg: Color32::from_rgb(0xc9, 0xd5, 0xe5),
+                header_bg: Color32::from_rgb(0xe4, 0xec, 0xf6),
+                panel_bg: Color32::from_rgb(0xe6, 0xee, 0xf8),
+                tab_text: Color32::from_rgb(0x4e, 0x5e, 0x78),
+                tab_text_active: Color32::from_rgb(0x1e, 0x2c, 0x42),
+                focus: Color32::from_rgb(0x34, 0x80, 0xe2),
+                accent: Color32::from_rgb(0x34, 0x80, 0xe2),
+                accent_hover: Color32::from_rgb(0x16, 0x52, 0xa8),
+                text: Color32::from_rgb(0x34, 0x44, 0x5e),
+                text_dim: Color32::from_rgb(0x4e, 0x5e, 0x78),
+                text_faint: Color32::from_rgb(0x6a, 0x79, 0x92),
+                hot_text: Color32::from_rgb(0x16, 0x52, 0xa8),
+                timecode: Color32::from_rgb(0x16, 0x52, 0xa8),
+                icon: Color32::from_rgb(0x34, 0x44, 0x5e),
+                icon_active: Color32::from_rgb(0x1e, 0x2c, 0x42),
+                hover: Color32::from_rgb(0xd5, 0xe0, 0xee),
+                pressed: Color32::from_rgb(0xc8, 0xd6, 0xea),
+                field_bg: Color32::from_rgb(0xdc, 0xe6, 0xf3),
+                field_border: Color32::from_rgb(0xb3, 0xc2, 0xd6),
+                separator: Color32::from_rgb(0xc9, 0xd5, 0xe5),
+                row: Color32::from_rgb(0xe6, 0xee, 0xf8),
+                row_alt: Color32::from_rgb(0xdf, 0xe8, 0xf4),
+                row_selected: Color32::from_rgb(0xc2, 0xd8, 0xf5),
+                tl_bg: Color32::from_rgb(0xdc, 0xe5, 0xf1),
+                tl_ruler_bg: Color32::from_rgb(0xe9, 0xf0, 0xf8),
+                tl_ruler_tick: Color32::from_rgb(0x6a, 0x79, 0x92),
+                tl_ruler_text: Color32::from_rgb(0x4e, 0x5e, 0x78),
+                cti: Color32::from_rgb(0x34, 0x80, 0xe2),
+                work_area: Color32::from_rgb(0xb3, 0xc2, 0xd6),
+                pasteboard: Color32::from_rgb(0xd6, 0xe0, 0xed),
                 // Keyframes have no outline: dark enough to stand out on the light time graph.
-                keyframe: Color32::from_rgb(0x6c, 0x6c, 0x6c),
+                keyframe: Color32::from_rgb(0x4e, 0x5e, 0x78),
+                keyframe_selected: Color32::from_rgb(0x16, 0x52, 0xa8),
                 // Custom-painted surfaces in the Light palette, so dark text stays readable on
                 // them (#644).
-                fx_header: Color32::from_rgb(0xd8, 0xd8, 0xd8),
-                fx_header_active: Color32::from_rgb(0xb0, 0xcf, 0xec),
-                tl_graph_selected: Color32::from_rgb(0xc2, 0xc2, 0xc2),
-                switch_well: Color32::from_rgb(0xf2, 0xf2, 0xf2),
-                tl_nav_bar: Color32::from_rgb(0x9a, 0x9a, 0x9a),
-                tl_work_area_bar: Color32::from_rgb(0x94, 0x94, 0x94),
-                expr_bg: Color32::from_rgb(0xf2, 0xf2, 0xf2),
+                fx_header: Color32::from_rgb(0xda, 0xe3, 0xef),
+                fx_header_active: Color32::from_rgb(0xc2, 0xd8, 0xf5),
+                tl_graph_selected: Color32::from_rgb(0xcc, 0xd9, 0xea),
+                switch_well: Color32::from_rgb(0xee, 0xf3, 0xfa),
+                tl_nav_bar: Color32::from_rgb(0x9a, 0xab, 0xc4),
+                tl_work_area_bar: Color32::from_rgb(0x8d, 0x9e, 0xb8),
+                expr_bg: Color32::from_rgb(0xee, 0xf3, 0xfa),
                 expr_text: Color32::from_rgb(0xa3, 0x34, 0x17),
+                radius: 8.0,
+                radius_sm: 5.0,
                 ..dark
             },
         }
@@ -629,6 +737,34 @@ pub fn apply_visuals(ctx: &egui::Context, t: &Tokens) {
     v.widgets.active.fg_stroke = Stroke::new(1.0, t.tab_text_active);
     v.widgets.open.bg_fill = t.hover;
     v.widgets.open.weak_bg_fill = t.hover;
+    match t.kind {
+        // Neumorphic Light and Dark: rounded windows and menus, soft shadows tinted with the
+        // palette's blue instead of grey.
+        ThemeKind::Light | ThemeKind::Dark => {
+            let shade = if light { Color32::from_rgba_unmultiplied(0x46, 0x5a, 0x82, 70) } else { Color32::from_black_alpha(150) };
+            v.window_corner_radius = egui::CornerRadius::same(10);
+            v.menu_corner_radius = egui::CornerRadius::same(8);
+            v.popup_shadow = egui::epaint::Shadow { offset: [0, 6], blur: 18, spread: 0, color: shade };
+            v.window_shadow = egui::epaint::Shadow { offset: [0, 10], blur: 30, spread: 0, color: shade };
+            v.selection.bg_fill =
+                if light { Color32::from_rgba_unmultiplied(0x34, 0x80, 0xe2, 0x55) } else { Color32::from_rgba_unmultiplied(0x5c, 0xa8, 0xff, 0x66) };
+            v.selection.stroke = Stroke::new(1.0, t.accent);
+            v.hyperlink_color = t.hot_text;
+        }
+        // Brand: menus, popups and windows are solid black blocks with a strong black shadow.
+        ThemeKind::Brand => {
+            v.window_fill = Color32::BLACK;
+            v.panel_fill = t.panel_bg;
+            v.window_stroke = Stroke::new(1.0, Color32::from_rgb(0x26, 0x28, 0x3c));
+            v.window_corner_radius = egui::CornerRadius::same(8);
+            v.menu_corner_radius = egui::CornerRadius::same(6);
+            v.popup_shadow = egui::epaint::Shadow { offset: [0, 8], blur: 32, spread: 0, color: Color32::BLACK };
+            v.window_shadow = egui::epaint::Shadow { offset: [0, 10], blur: 36, spread: 2, color: Color32::BLACK };
+            v.selection.bg_fill = Color32::from_rgba_unmultiplied(0x66, 0x7e, 0xea, 0x88);
+            v.hyperlink_color = Color32::from_rgb(0xa9, 0xb4, 0xff);
+        }
+        ThemeKind::Darker => {}
+    }
     // egui keeps one style per light/dark theme and picks it by its theme preference (see
     // [`theme_preference`]); both get ours, so whichever it picks, egui's defaults never show.
     ctx.all_styles_mut(|s| {
@@ -650,6 +786,117 @@ pub fn apply_visuals(ctx: &egui::Context, t: &Tokens) {
         s.text_styles.insert(TextStyle::Monospace, FontId::new(12.0, FontFamily::Monospace));
         s.animation_time = 0.1;
     });
+}
+
+/// The colour the Brand backdrop reads as: the area round the composition in the Brand theme.
+pub const BRAND_CANVAS: Color32 = Color32::from_rgb(0x16, 0x18, 0x2C);
+
+/// The Brand theme's backdrop, as the owner's site draws it in CSS: the brand gradient
+/// (#0a0a0f → #1a1a2e → #16213e at 135°), three soft glows, a 30 px grid of 5% white lines and an
+/// inner shadow round the edges.
+pub fn paint_brand_backdrop(painter: &egui::Painter, rect: egui::Rect) {
+    use egui::epaint::{Mesh, Vertex, WHITE_UV};
+    if !(rect.width().is_finite() && rect.height().is_finite()) || rect.width() <= 0.0 || rect.height() <= 0.0 {
+        return;
+    }
+    let vertex = |pos: egui::Pos2, color: Color32| Vertex { pos, uv: WHITE_UV, color };
+    let quad = |m: &mut Mesh, corners: [(egui::Pos2, Color32); 4]| {
+        let base = m.vertices.len() as u32;
+        m.vertices.extend(corners.iter().map(|(p, c)| vertex(*p, *c)));
+        m.indices.extend([base, base + 1, base + 2, base, base + 2, base + 3]);
+    };
+    // The gradient: at 135° the top-left corner is the first stop, the bottom-right the last, and
+    // the other two corners sit on the middle stop.
+    let (a, mid, b) = (Color32::from_rgb(0x0A, 0x0A, 0x0F), Color32::from_rgb(0x1A, 0x1A, 0x2E), Color32::from_rgb(0x16, 0x21, 0x3E));
+    let mut m = Mesh::default();
+    quad(&mut m, [(rect.left_top(), a), (rect.right_top(), mid), (rect.right_bottom(), b), (rect.left_bottom(), mid)]);
+    painter.add(egui::Shape::mesh(m));
+    // The glows: a fan from the centre colour out to transparent at half the farthest-corner distance.
+    for (fx, fy, rgb, alpha) in [(0.2_f32, 0.8_f32, (120, 119, 198), 0.30_f32), (0.8, 0.2, (255, 119, 198), 0.30), (0.4, 0.4, (120, 219, 255), 0.20)] {
+        let c = rect.min + egui::vec2(rect.width() * fx, rect.height() * fy);
+        let reach = egui::vec2(rect.width() * fx.max(1.0 - fx), rect.height() * fy.max(1.0 - fy)).length() * 0.5;
+        let inner = Color32::from_rgba_unmultiplied(rgb.0, rgb.1, rgb.2, (alpha * 255.0) as u8);
+        let mut g = Mesh::default();
+        g.vertices.push(vertex(c, inner));
+        const STEPS: u32 = 64;
+        for i in 0..=STEPS {
+            let angle = std::f32::consts::TAU * i as f32 / STEPS as f32;
+            g.vertices.push(vertex(c + egui::vec2(angle.cos(), angle.sin()) * reach, Color32::TRANSPARENT));
+        }
+        for i in 1..=STEPS {
+            g.indices.extend([0, i, i + 1]);
+        }
+        painter.add(egui::Shape::mesh(g));
+    }
+    // The grid: lines 30 points apart from the top-left corner (at most a few hundred).
+    let line = Stroke::new(1.0, Color32::from_rgba_unmultiplied(255, 255, 255, 13));
+    let mut x = rect.left() + 0.5;
+    let mut n = 0;
+    while x < rect.right() && n < 400 {
+        painter.vline(x, rect.y_range(), line);
+        x += 30.0;
+        n += 1;
+    }
+    let mut y = rect.top() + 0.5;
+    n = 0;
+    while y < rect.bottom() && n < 400 {
+        painter.hline(rect.x_range(), y, line);
+        y += 30.0;
+        n += 1;
+    }
+    // The inner shadow: solid for the 10 px spread, then fading over the 35 px blur.
+    let dark = |a: f32| Color32::from_rgba_unmultiplied(0, 0, 0, (a * 153.0) as u8);
+    let mut sh = Mesh::default();
+    for (i0, i1, a0, a1) in [(0.0_f32, 10.0_f32, 1.0_f32, 0.75_f32), (10.0, 45.0, 0.75, 0.0)] {
+        let r = rect;
+        quad(
+            &mut sh,
+            [
+                (egui::pos2(r.left(), r.top() + i0), dark(a0)),
+                (egui::pos2(r.right(), r.top() + i0), dark(a0)),
+                (egui::pos2(r.right(), r.top() + i1), dark(a1)),
+                (egui::pos2(r.left(), r.top() + i1), dark(a1)),
+            ],
+        );
+        quad(
+            &mut sh,
+            [
+                (egui::pos2(r.left(), r.bottom() - i1), dark(a1)),
+                (egui::pos2(r.right(), r.bottom() - i1), dark(a1)),
+                (egui::pos2(r.right(), r.bottom() - i0), dark(a0)),
+                (egui::pos2(r.left(), r.bottom() - i0), dark(a0)),
+            ],
+        );
+        quad(
+            &mut sh,
+            [
+                (egui::pos2(r.left() + i0, r.top()), dark(a0)),
+                (egui::pos2(r.left() + i1, r.top()), dark(a1)),
+                (egui::pos2(r.left() + i1, r.bottom()), dark(a1)),
+                (egui::pos2(r.left() + i0, r.bottom()), dark(a0)),
+            ],
+        );
+        quad(
+            &mut sh,
+            [
+                (egui::pos2(r.right() - i1, r.top()), dark(a1)),
+                (egui::pos2(r.right() - i0, r.top()), dark(a0)),
+                (egui::pos2(r.right() - i0, r.bottom()), dark(a0)),
+                (egui::pos2(r.right() - i1, r.bottom()), dark(a1)),
+            ],
+        );
+    }
+    painter.add(egui::Shape::mesh(sh));
+}
+
+/// The area round the composition: the brand backdrop in the Brand theme (`fill` is
+/// [`BRAND_CANVAS`]), else `fill`.
+pub fn paint_canvas_fill(painter: &egui::Painter, rect: egui::Rect, fill: Color32) {
+    if fill == BRAND_CANVAS {
+        paint_brand_backdrop(painter, rect);
+    } else {
+        painter.rect_filled(rect, 0.0, fill);
+    }
 }
 
 #[cfg(all(test, not(target_arch = "wasm32")))]

@@ -113,7 +113,8 @@ impl Default for CompDraft {
             width: 1920,
             height: 1080,
             pixel_aspect: 1.0,
-            fps: 29.97,
+            // AI-After Effects: 25 fps, the European and Russian broadcast standard.
+            fps: 25.0,
             duration: 10.0,
             start: 0.0,
             bg: [0.0, 0.0, 0.0],

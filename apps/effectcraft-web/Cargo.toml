@@ -1,6 +1,6 @@
 [package]
 name = "effectcraft-web"
-description = "EffectCraft in the browser (wasm32): eframe web runner, persistent browser storage (OPFS / IndexedDB), Web Audio, Web Worker renders, PWA, window.effectcraft API"
+description = "AI-After Effects: EffectCraft in the browser (wasm32): eframe web runner, persistent browser storage (OPFS / IndexedDB), Web Audio, Web Worker renders, window.aiaftereffects bridge"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -40,6 +40,9 @@ web-sys = { version = "0.3", features = [
     "AbortController",
     "AbortSignal",
     "CssStyleDeclaration",
+    "CustomEvent",
+    "CustomEventInit",
+    "Storage",
     "Document",
     "Element",
     "DedicatedWorkerGlobalScope",

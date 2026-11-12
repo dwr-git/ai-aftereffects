@@ -31,6 +31,7 @@ pub const UI_COMMANDS: &[UiCommand] = &[
     uic!("view.transparencyGrid", "Transparency Grid", [], None),
     uic!("view.fastPreviews", "Fast Previews", [], None),
     uic!("view.theme.toggle", "Next Appearance Mode", [], None),
+    uic!("view.theme.brand", "Theme: Brand", [], None),
     uic!("view.theme.dark", "Theme: Dark", [], None),
     uic!("view.theme.darker", "Theme: Darker", [], None),
     uic!("view.theme.light", "Theme: Light", [], None),

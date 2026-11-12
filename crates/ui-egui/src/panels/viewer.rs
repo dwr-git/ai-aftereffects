@@ -290,7 +290,7 @@ fn phase_layout(app: &mut EffectcraftApp, ui: &mut egui::Ui, rect: Rect, v: &mut
     // keeps the overlays and the interaction.
     let full = locked_pane(app, ui, full, pasteboard);
     let area = aux_views(app, ui, comp, cid, full, pasteboard);
-    p.rect_filled(area, 0.0, pasteboard);
+    crate::theme::paint_canvas_fill(&p, area, pasteboard);
     // View ▸ Show Rulers takes a strip on the top and left.
     let outer = area;
     let area = vt::inset(app, area);

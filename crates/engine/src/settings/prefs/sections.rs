@@ -25,7 +25,7 @@ macro_rules! page {
 page!(General {
     /// Interface language: `system` (the operating system's, where EffectCraft has it, else
     /// English), or a language code from `LANGUAGES`.
-    language: String = "system".into(),
+    language: String = "ru".into(),
     /// Levels of Undo (1–99).
     undo_levels: u32 = 32,
     /// Path Point and Handle Size (px).
@@ -114,12 +114,12 @@ page!(Previews {
 page!(Appearance {
     /// The single theme before appearance modes (`dark`, `darker` or `light`), kept for older
     /// settings files and automation: setting it picks its family's mode and theme. While the mode
-    /// is Dark or Light it mirrors the theme in use.
-    theme: String = "dark".into(),
+    /// is Dark or Light it mirrors the theme in use. AI-After Effects starts on the Brand theme.
+    theme: String = "brand".into(),
     /// `auto` (follow the operating system), `dark` or `light`. New installs stay Dark.
     appearance_mode: String = "dark".into(),
-    /// The theme used in dark appearance: `dark` or `darker`.
-    dark_theme: String = "dark".into(),
+    /// The theme used in dark appearance: `brand` (AI-After Effects' default), `dark` or `darker`.
+    dark_theme: String = "brand".into(),
     /// The theme used in light appearance: `light`.
     light_theme: String = "light".into(),
     /// Theme shortcuts in the appearance context menu.

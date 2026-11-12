@@ -384,12 +384,8 @@ fn find_missing(s: &mut Session, p: &Value) -> Result<Value> {
 
 fn collect_files(s: &mut Session, p: &Value) -> Result<Value> {
     let folder = str_p(p, "folder").ok_or_else(|| bad("file.collectFiles", "missing `folder`"))?.trim_end_matches('/').to_string();
-    let stem = s
-        .path
-        .as_deref()
-        .and_then(|p| std::path::Path::new(p).file_stem())
-        .map(|n| n.to_string_lossy().to_string())
-        .unwrap_or_else(|| "Untitled Project".into());
+    let stem =
+        s.path.as_deref().and_then(|p| std::path::Path::new(p).file_stem()).map(|n| n.to_string_lossy().to_string()).unwrap_or_else(|| "Без названия".into());
     let out = format!("{folder}/{stem}.ecproj");
     // Where every copy goes, before anything is made: a copy never lands on a file the project
     // reads (other footage, a proxy, the project file itself), and then nothing is written.

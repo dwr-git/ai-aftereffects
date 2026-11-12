@@ -65,7 +65,7 @@ pub fn path_for(name: &str) -> String {
 }
 
 fn file_name(path: &str) -> &str {
-    path.rsplit('/').next().filter(|n| !n.is_empty()).unwrap_or("effectcraft-output")
+    path.rsplit('/').next().filter(|n| !n.is_empty()).unwrap_or("render")
 }
 
 fn mime(name: &str) -> &'static str {
@@ -107,6 +107,12 @@ pub fn download(name: &str, data: &[u8]) -> Result<(), JsValue> {
     Ok(())
 }
 
+/// A project file (`.ecproj`, `.ecprojx`): what Save and Save As write.
+pub fn is_project(path: &str) -> bool {
+    let ext = path.rsplit_once('.').map(|(_, e)| e.to_ascii_lowercase()).unwrap_or_default();
+    path.rsplit_once('.').is_some_and(|(stem, _)| !stem.ends_with('/')) && (ext == "ecproj" || ext == "ecprojx")
+}
+
 /// Engine file access (projects): reads from the table; writes go to the table (persisted) and
 /// download, except [`save_quietly`] saves.
 pub struct WebServices;
@@ -127,6 +133,15 @@ impl Services for WebServices {
         };
         if quiet || crate::is_worker() {
             return Ok(());
+        }
+        // AI-After Effects: a saved project goes to the page, which keeps it in the user's
+        // projects on the server; everything else (exports, a refused hand-over) downloads.
+        if is_project(path) {
+            match crate::api::save_to_page(path, data) {
+                Ok(true) => return Ok(()),
+                Ok(false) => {}
+                Err(e) => log::warn!("saving to the page failed, downloading instead: {e}"),
+            }
         }
         download(file_name(path), data).map_err(|e| std::io::Error::other(format!("download failed: {e:?}")))
     }

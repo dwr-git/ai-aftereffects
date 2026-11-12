@@ -83,13 +83,13 @@ pub fn project_name(app: &EffectcraftApp) -> String {
         .as_deref()
         .and_then(|p| std::path::Path::new(p).file_name())
         .map(|n| n.to_string_lossy().into_owned())
-        .unwrap_or_else(|| "Untitled Project.ecproj".into())
+        .unwrap_or_else(|| "Без названия.ecproj".into())
 }
 
 /// The window title: the project's path (or name) and `*` while it has unsaved changes.
 pub fn window_title(app: &EffectcraftApp) -> String {
     let doc = app.session.path.clone().unwrap_or_else(|| project_name(app));
-    format!("EffectCraft - {doc}{}", if app.session.is_dirty() { " *" } else { "" })
+    format!("AI-After Effects — {doc}{}", if app.session.is_dirty() { " *" } else { "" })
 }
 
 /// Whether the prompt is Revert Project (Revert / Cancel) instead of Unsaved Changes.

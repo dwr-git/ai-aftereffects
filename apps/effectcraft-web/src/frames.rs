@@ -116,6 +116,15 @@ impl WebFrames {
             let Some(k) = s.workers.iter().position(|w| w.alive && w.busy.is_none()) else { return Err((done, "no idle frame worker".to_string())) };
             // Footage the worker hasn't got yet.
             let w = &mut s.workers[k];
+            // AI-After Effects: the fonts the page added, once per worker.
+            for (p, d) in crate::fonts::all() {
+                if w.files.contains_key(&p) {
+                    continue;
+                }
+                let bytes = js_sys::Uint8Array::from(&d[..]);
+                frame_worker_post(w.index, &obj(&[("type", "file".into()), ("path", p.as_str().into()), ("bytes", bytes.into())]), &js_sys::Array::new());
+                w.files.insert(p, 0);
+            }
             for p in footage_files(&job.project) {
                 let Some((d, version)) = crate::files::get_versioned(&p) else { continue };
                 if w.files.get(&p) == Some(&version) {

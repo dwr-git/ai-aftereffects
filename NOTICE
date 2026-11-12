@@ -1,11 +1,17 @@
-EffectCraft
-Copyright (c) 2026 ArtCraft Team and the EffectCraft contributors.
+AI-After Effects
+Based on EffectCraft (https://github.com/storytold/effectcraft).
+Copyright (c) 2026 ArtCraft Team and the EffectCraft contributors, and the AI-After Effects
+contributors.
 Licensed under the MIT License or the Apache License, Version 2.0, at your option
 (LICENSE-MIT, LICENSE-APACHE).
 
-The ArtCraft name, wordmark and logos in docs/brand/ are trademarks of the ArtCraft Team. They are
-not open source and are not covered by the license above; their terms are in
-docs/brand/LICENSE-brand.txt.
+AI-After Effects carries none of the ArtCraft marks: docs/brand/ was removed, as its licence
+requires of modified versions. "After Effects" names the kind of program only; this product is not
+affiliated with Adobe.
+
+The packaged site (not this repository) ships the metric-compatible open fonts Liberation Sans,
+Serif and Mono (SIL Open Font License 1.1), Carlito and Caladea (SIL Open Font License 1.1), with
+their licence texts in fonts/.
 
 Third-party material
 

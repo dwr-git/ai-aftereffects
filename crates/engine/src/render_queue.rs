@@ -442,11 +442,7 @@ async fn run_work(w: Work, shared: &JobShared, notify: &mut dyn FnMut(&JobShared
 impl Session {
     /// The project's name for `[projectName]` (file stem, or "Untitled Project").
     pub fn project_name(&self) -> String {
-        self.path
-            .as_deref()
-            .and_then(|p| std::path::Path::new(p).file_stem())
-            .map(|s| s.to_string_lossy().to_string())
-            .unwrap_or_else(|| "Untitled Project".into())
+        self.path.as_deref().and_then(|p| std::path::Path::new(p).file_stem()).map(|s| s.to_string_lossy().to_string()).unwrap_or_else(|| "Без названия".into())
     }
 
     /// The output path of a queue item: template tokens expanded, ending in the format's

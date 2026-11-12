@@ -1301,26 +1301,13 @@ Window
   VR Comp Editor | window.panel {"panel":"vrCompEditor"}
   @dynamic:scriptPanels
 Help
-  EffectCraft Help... | help.docs {"page":"help"} | F1
-  Scripting Help... | help.docs {"page":"scripting"}
-  Expression Reference... | help.docs {"page":"expressions"}
-  Effect Reference... | help.docs {"page":"effects"}
   Animation Presets... | anim.browsePresets
   Keyboard Shortcuts... | app.keyboardShortcuts
   ---
   In-App Tutorials... | help.inAppTutorials
-  Online Tutorials... | help.onlineTutorials
   ---
   System Compatibility Report... | help.systemReport
-  Enable Logging | help.enableLogging
-  Reveal Logging File | help.revealLogFile
   ---
-  Join the ArtCraft Discord... | help.discord
-  Provide Feedback... | help.reportIssue
-  ---
-  ArtCraft Website | help.website
-  EffectCraft Home Page | help.appPage
-  EffectCraft on GitHub | help.github
   Open Demo Project | file.openDemoProject
   [!mac] ---
   [!mac] About EffectCraft... | app.about
