@@ -303,6 +303,9 @@ pub async fn start(canvas_id: String) -> Result<(), JsValue> {
     // `./effectcraft-config.json`: what to open on load.
     // `?empty` and `?demo` decide by themselves, so they skip the request.
     let startup = if empty || query_flag("demo") { Startup::default() } else { config_file::startup().await };
+    // AI-After Effects: a first visit starts on a blank project, not the demo (Help ▸ Open Demo
+    // Project and `?demo` still open it); a later visit comes back to the last project.
+    let startup = if startup == Startup::Last { Startup::Empty } else { startup };
     // An explicit `"demo"` start leaves the saved session alone until the user opens or edits something.
     let keep_session = !empty && startup.keeps_session();
     browse::restore();

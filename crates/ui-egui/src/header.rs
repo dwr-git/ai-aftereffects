@@ -30,8 +30,10 @@ pub fn show(app: &mut EffectcraftApp, ui: &mut egui::Ui, rect: Rect) {
     let x = brand_and_home(app, ui, &p, x, cy);
     let x = tool_slots(app, ui, &p, x, cy);
     let x = tool_options_bar(app, ui, &p, x + 10.0, cy);
-    let x = snapping_toggle(app, ui, &p, x, cy);
-    let x = ai_chip(app, ui, &p, x, cy);
+    let (x, snap_end) = snapping_toggle(app, ui, &p, x, cy);
+    // The AI chip follows the Snapping options; the workspace tabs keep clear of it.
+    let chip_end = ai_chip(app, ui, &p, snap_end, cy);
+    let x = if chip_end > snap_end { x.max(chip_end - 110.0) } else { x };
     right_side(app, ui, &p, rect, x, cy);
 }
 
@@ -267,7 +269,7 @@ fn tool_options_bar(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Paint
 }
 
 /// The Snapping checkbox, its label and options menu; returns the x where it started.
-fn snapping_toggle(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, x: f32, cy: f32) -> f32 {
+fn snapping_toggle(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painter, x: f32, cy: f32) -> (f32, f32) {
     let t = app.tokens;
     let snap = Rect::from_min_size(pos2(x, cy - 10.0), vec2(20.0, 20.0));
     // The engine owns snapping (View ▸ Snapping); the checkbox mirrors it.
@@ -281,7 +283,7 @@ fn snapping_toggle(app: &mut EffectcraftApp, ui: &mut egui::Ui, p: &egui::Painte
     app.auto.add("header.snapping", snap, "Snapping");
     let label = p.text(pos2(snap.max.x + 4.0, cy), Align2::LEFT_CENTER, tr("Snapping"), Tokens::ui(12.0), t.text_dim);
     snapping_options(app, ui, Rect::from_min_size(pos2(label.max.x + 2.0, cy - 9.0), vec2(18.0, 18.0)));
-    x
+    (x, label.max.x + 20.0)
 }
 
 /// Right side: community buttons, appearance and workspaces; `left` is where the tools end.
