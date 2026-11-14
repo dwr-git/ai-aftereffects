@@ -142,7 +142,7 @@ After Effects (.aep, .aepx).
 
 | Что | Где ищется |
 |---|---|
-| Адрес сервера модели | `AI_AFTEREFFECTS_LLM_URL` → `LLM_URL`, `OLLAMA_URL`, `OLLAMA_HOST`, `OPENAI_BASE_URL` → `OLLAMA_IP` + `OLLAMA_PORT` → `$url_ollama` из config.php системы → `127.0.0.1:11434` |
+| Адрес сервера модели | `AI_AFTEREFFECTS_LLM_URL` → `LLM_URL`, `OLLAMA_URL`, `OPENAI_BASE_URL` (берутся как есть); без них — первый, который отвечает, из: `OLLAMA_IP` + `OLLAMA_PORT`, `OLLAMA_HOST` (без порта — `OLLAMA_PORT` или 11434, как у самой Ollama), `$url_ollama` из config.php системы, `127.0.0.1:11434` |
 | Модель | `AI_AFTEREFFECTS_MODEL` → `GLOBAL_MODEL`, `LLM_MODEL`, `OLLAMA_MODEL`, `CHAT_MODEL`, `DEFAULT_MODEL` → `$global_model` из config.php → первая модель, которую отдаёт сам сервер |
 | Размер контекста | `AI_AFTEREFFECTS_CONTEXT` → `GLOBAL_MODEL_CONTEXT`, `LLM_CONTEXT`, `OLLAMA_CTXSIZE` → `$ollama_ctxsize` → 32768 |
 | Ключ (если шлюз его требует) | `AI_AFTEREFFECTS_API_KEY` → `LLM_API_KEY`, `OPENAI_API_KEY` |
